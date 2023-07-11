@@ -8,7 +8,7 @@ const Customers = sequelize.define('Customers', {
             primaryKey: true,
             defaultValue: DataTypes.UUIDV4
       },
-      full_name: {
+      fullname: {
             type: DataTypes.STRING
       }
       , phone: {
@@ -25,6 +25,11 @@ const Customers = sequelize.define('Customers', {
 });
 
 const Customers_Details = sequelize.define('customers_details', {
+      customer_id: {
+            type: DataTypes.UUID,
+            allowNull: false,
+            primaryKey: true,
+      },
       pincode: {
             type: DataTypes.REAL(6)
       }
@@ -34,10 +39,10 @@ const Customers_Details = sequelize.define('customers_details', {
       children: {
             type: DataTypes.SMALLINT,
       },
-      address1: {
+      address_1: {
             type: DataTypes.TEXT
       },
-      address2: {
+      address_2: {
             type: DataTypes.TEXT
       },
       location: {
@@ -47,11 +52,12 @@ const Customers_Details = sequelize.define('customers_details', {
             type: DataTypes.TEXT
       },
       referral_id: {
-            type: DataTypes.TEXT
+            type: DataTypes.TEXT,
+            unique: true
       }
 }, {
       tableName: 'customers_details'
 });
 
-module.exports = {Customers,Customers_Details};
+module.exports = { Customers, Customers_Details };
 

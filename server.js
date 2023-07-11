@@ -19,7 +19,7 @@ app.use(function (req, res, next) {
 app.options('*', cors())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(require('./routes/index'))
-sequelize.sync().then((results) => {
+sequelize.sync({alter:true}).then((results) => {
   console.log(results)
 }).catch(error => {
   console.log(error)
