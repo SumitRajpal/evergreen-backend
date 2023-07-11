@@ -2,7 +2,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 var compression = require('compression')
 const sequelize = require('./utils/database')
-var cors = require('cors')
+var cors = require('cors');
+const { Association } = require('./models/associations');
 const app = express();
 app.use(bodyParser.json());
 app.set('trust proxy', true);
@@ -18,9 +19,8 @@ app.use(function (req, res, next) {
 app.options('*', cors())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(require('./routes/index'))
-
-sequelize.authenticate().then(() => {
-  console.log("established")
+sequelize.sync().then((results) => {
+  console.log(results)
 }).catch(error => {
   console.log(error)
 })
