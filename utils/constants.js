@@ -1,6 +1,6 @@
 
 const EvergreenTable = {
-      customers,customer_details
+      customers,customer_detail
 }
 
 module.exports = EvergreenTable
