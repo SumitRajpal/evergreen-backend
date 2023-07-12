@@ -1,7 +1,7 @@
 const sequelize = require('../utils/database')
 const { DataTypes } = require('sequelize');
 
-const Customers = sequelize.define('Customers', {
+const Customers = sequelize.define('customers', {
       id: {
             type: DataTypes.UUID,
             allowNull: false,
@@ -18,13 +18,15 @@ const Customers = sequelize.define('Customers', {
             type: DataTypes.TEXT
       },
       active: {
-            type: DataTypes.BOOLEAN
+            type: DataTypes.BOOLEAN,
+            defaultValue: true
       }
 }, {
+      timestamps:false,
       tableName: 'customers'
 });
 
-const Customers_Details = sequelize.define('customers_details', {
+const Customers_Detail = sequelize.define('customers_detail', {
       customer_id: {
             type: DataTypes.UUID,
             allowNull: false,
@@ -56,8 +58,9 @@ const Customers_Details = sequelize.define('customers_details', {
             unique: true
       }
 }, {
-      tableName: 'customers_details'
+      timestamps:false,
+      tableName: 'customers_detail'
 });
 
-module.exports = { Customers, Customers_Details };
+module.exports = { Customers, Customers_Detail };
 
