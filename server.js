@@ -5,7 +5,6 @@ const sequelize = require('./utils/database')
 var cors = require('cors');
 const { Association } = require('./models/associations');
 const app = express();
-app.use(bodyParser.json());
 app.set('trust proxy', true);
 app.use(compression());
 app.use(function (req, res, next) {
@@ -18,8 +17,9 @@ app.use(function (req, res, next) {
 });
 app.options('*', cors())
 app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.json());
 app.use(require('./routes/index'))
-sequelize.sync({alter:true}).then((results) => {
+sequelize.sync({force:true}).then((results) => {
   console.log(results)
 }).catch(error => {
   console.log(error)

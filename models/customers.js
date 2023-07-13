@@ -1,7 +1,8 @@
+const EvergreenTable = require('../utils/constants');
 const sequelize = require('../utils/database')
 const { DataTypes } = require('sequelize');
 
-const Customers = sequelize.define('customers', {
+const Customers = sequelize.define(EvergreenTable.customers, {
       id: {
             type: DataTypes.UUID,
             allowNull: false,
@@ -12,10 +13,12 @@ const Customers = sequelize.define('customers', {
             type: DataTypes.STRING
       }
       , phone: {
-            type: DataTypes.TEXT
+            type: DataTypes.TEXT,
+            unique:true
       },
       email: {
-            type: DataTypes.TEXT
+            type: DataTypes.TEXT,
+            unique:true
       },
       active: {
             type: DataTypes.BOOLEAN,
@@ -23,17 +26,18 @@ const Customers = sequelize.define('customers', {
       }
 }, {
       timestamps:false,
-      tableName: 'customers'
+      freezeTableName:true
 });
 
-const Customers_Detail = sequelize.define('customers_detail', {
+const Customer_Details = sequelize.define(EvergreenTable.customer_details, {
       customer_id: {
             type: DataTypes.UUID,
             allowNull: false,
             primaryKey: true,
+            defaultValue:DataTypes.UUIDV4
       },
       pincode: {
-            type: DataTypes.REAL(6)
+            type: DataTypes.REAL
       }
       , member: {
             type: DataTypes.SMALLINT
@@ -59,8 +63,8 @@ const Customers_Detail = sequelize.define('customers_detail', {
       }
 }, {
       timestamps:false,
-      tableName: 'customers_detail'
+      freezeTableName:true
 });
 
-module.exports = { Customers, Customers_Detail };
+module.exports = { Customers, Customer_Details };
 

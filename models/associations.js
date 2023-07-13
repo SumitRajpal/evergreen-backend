@@ -1,9 +1,10 @@
 const { DataTypes } = require('sequelize');
-const {Customers_Detail,Customers} = require('./customers');
-Customers.hasOne(Customers_Detail,{
-      foreignKey:"customer_id",sourceKey:"id"
+const {Customer_Details,Customers} = require('./customers');
+const EvergreenTable = require('../utils/constants');
+Customers.hasOne(Customer_Details,{
+      foreignKey:"customer_id",sourceKey:"id",as:EvergreenTable.customer_details
 });
-Customers_Detail.belongsTo(Customers,{foreignKey: "customer_id"})
+Customer_Details.belongsTo(Customers,{foreignKey: "customer_id",as:EvergreenTable.customers})
 module.exports = {
-      Customers,Customers_Detail
+      Customers,Customer_Details
 }
