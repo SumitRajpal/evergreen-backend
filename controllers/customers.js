@@ -3,7 +3,7 @@ const { EvergreenTable } = require("../utils/constants");
 
 const getCustomer = async (request, response) => {
   const customers = await Customers.findAll( {
-    include: { model: Customer_Details, attributes: { exclude: "customer_id" } },
+    include: { model: Customer_Details, as:"customer_details", attributes: { exclude: "customer_id" } },
   });
   response.status(200).json(customers).end();
 };
