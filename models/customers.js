@@ -10,23 +10,32 @@ const Customers = sequelize.define(EvergreenTable.customers, {
             defaultValue: DataTypes.UUIDV4
       },
       fullname: {
-            type: DataTypes.STRING
+            type: DataTypes.STRING,
+            validate:{
+                  isAlpha: true
+            }
       }
       , phone: {
             type: DataTypes.TEXT,
-            unique:true
+            unique: true,
+            validate:{
+                  isNumeric: true
+            }
       },
       email: {
             type: DataTypes.TEXT,
-            unique:true
+            unique: true,
+            validate:{
+                  isEmail:true
+            }
       },
       active: {
             type: DataTypes.BOOLEAN,
             defaultValue: true
       }
 }, {
-      timestamps:false,
-      freezeTableName:true
+      timestamps: false,
+      freezeTableName: true
 });
 
 const Customer_Details = sequelize.define(EvergreenTable.customer_details, {
@@ -34,10 +43,14 @@ const Customer_Details = sequelize.define(EvergreenTable.customer_details, {
             type: DataTypes.UUID,
             allowNull: false,
             primaryKey: true,
-            defaultValue:DataTypes.UUIDV4
+            defaultValue: DataTypes.UUIDV4
       },
       pincode: {
-            type: DataTypes.REAL
+            type: DataTypes.REAL,
+            validate:{
+                  min:110000,
+                  max:900000
+            }
       }
       , member: {
             type: DataTypes.SMALLINT
@@ -49,7 +62,7 @@ const Customer_Details = sequelize.define(EvergreenTable.customer_details, {
             type: DataTypes.TEXT
       },
       address_2: {
-            type: DataTypes.TEXT
+            type: DataTypes.TEXT,
       },
       location: {
             type: DataTypes.TEXT
@@ -62,8 +75,8 @@ const Customer_Details = sequelize.define(EvergreenTable.customer_details, {
             unique: true
       }
 }, {
-      timestamps:false,
-      freezeTableName:true
+      timestamps: false,
+      freezeTableName: true
 });
 
 module.exports = { Customers, Customer_Details };
