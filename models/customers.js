@@ -11,9 +11,6 @@ const Customers = sequelize.define(EvergreenTable.customers, {
       },
       fullname: {
             type: DataTypes.STRING,
-            validate:{
-                  isAlpha: true
-            }
       }
       , phone: {
             type: DataTypes.TEXT,
@@ -79,5 +76,37 @@ const Customer_Details = sequelize.define(EvergreenTable.customer_details, {
       freezeTableName: true
 });
 
-module.exports = { Customers, Customer_Details };
+const Vendors = sequelize.define(EvergreenTable.vendors, {
+      id: {
+            type: DataTypes.UUID,
+            allowNull: false,
+            primaryKey: true,
+            defaultValue: DataTypes.UUIDV4
+      },
+      active: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: true
+      }
+}, {
+      timestamps: false,
+      freezeTableName: true
+});
+
+const Employees = sequelize.define(EvergreenTable.employees, {
+      id: {
+            type: DataTypes.UUID,
+            allowNull: false,
+            primaryKey: true,
+            defaultValue: DataTypes.UUIDV4
+      },
+      active: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: true
+      }
+}, {
+      timestamps: false,
+      freezeTableName: true
+});
+
+module.exports = { Customers, Customer_Details,Vendors,Employees };
 

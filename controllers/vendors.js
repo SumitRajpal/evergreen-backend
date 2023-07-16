@@ -1,13 +1,13 @@
-const { Customers, Customer_Details } = require("../models/customers");
+const { Customers, Customer_Details, Vendors } = require("../models/customers");
 const { EvergreenTable } = require("../utils/constants");
 const sequelize = require("../utils/database");
 /**
  * @swagger
- * /customers:
+ * /vendors:
  *   get:
  *     tags:
- *       - All Customers
- *     description: Returns all customers
+ *       - All Vendors
+ *     description: Returns all VENDORS
  *     produces:
  *       - application/json
  *     responses:
@@ -16,15 +16,15 @@ const sequelize = require("../utils/database");
  *         schema:
  *           $ref: '#/definitions/Customers'
  */
-const getCustomer = async (request, response, next) => {
+const getVendors = async (request, response, next) => {
   try {
-    const customers = await Customers.findAndCountAll({
+    const vendors = await Customers.findAndCountAll({
       where: request.body,
       limit: 20,
       offset: 0,
-      include: { model: Customer_Details, as: "customer_details", attributes: { exclude: "customer_id" } },
+      include: { model: Vendors, as: "vendors", attributes: { exclude: "id" } },
     });
-    response.status(200).json(customers).end();
+    response.status(200).json(vendors).end();
   } catch (error) {
     next(error);
   }
@@ -51,18 +51,18 @@ const getCustomer = async (request, response, next) => {
  *         schema:
  *           $ref: '#/definitions/Customer'
  */
-const getCustomerById = async (request, response, next) => {
+const getVendorsById = async (request, response, next) => {
   const id = request.params.id;
   try {
-    const customers = await Customers.findByPk(id, {
+    const vendors = await Customers.findByPk(id, {
       include: {
-        model: Customer_Details,
-        as: "customer_details", attributes: { exclude: "customer_id" }
+        model: Vendors,
+        as: "vendors", attributes: { exclude: "id" }
       },
     });
-    response.status(200).json(customers).end();
-  } catch(error) {
-    next(error)
+    response.status(200).json(vendors).end();
+  } catch (error) {
+    next(error);
   }
 };
 
@@ -86,16 +86,10 @@ const getCustomerById = async (request, response, next) => {
  *       200:
  *         description: Successfully created
  */
-const setCustomer = async (request, response, next) => {
+const setVendors = async (request, response, next) => {
   try {
-    const customers = await Customers.create(request.body,
-      {
-        include: [{
-          model: Customer_Details,
-          as: "customer_details"
-        }]
-      })
-    response.status(200).json(customers).end();
+    const [vendors,created] = await Vendors.upsert(request.body)
+    response.status(200).json(vendors).end();
   } catch (error) {
     next(error)
   }
@@ -103,24 +97,13 @@ const setCustomer = async (request, response, next) => {
 };
 
 
-const putCustomer = async (request, response, next) => {
+const putVendors = async (request, response, next) => {
   try {
-    const transaction = await sequelize.transaction();
-    const customer = await Customers.update(request.body,
-      { where: { id: request.params.id } },
-      { transaction });
-
-    const customer_details = await Customer_Details.update(request.body.customer_details,
-      { where: { customer_id: request.params.id } },
-      { transaction });
-
-    await transaction.commit();
+    const vendors = await Vendors.update(request.body,
+      { where: { id: request.params.id } });
     response.status(200).json({ message: "Updated Successfully" }).end();
   } catch (error) {
     next(error);
-    if (transaction) {
-      await transaction.rollback();
-    }
   }
 
 };
@@ -128,8 +111,8 @@ const putCustomer = async (request, response, next) => {
 
 
 module.exports = {
-  getCustomer,
-  getCustomerById,
-  setCustomer,
-  putCustomer
+      getVendors,
+  getVendorsById,
+  setVendors,
+  putVendors
 };
