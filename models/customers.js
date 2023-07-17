@@ -14,16 +14,22 @@ const Customers = sequelize.define(EvergreenTable.customers, {
       }
       , phone: {
             type: DataTypes.TEXT,
-            unique: true,
-            validate:{
+            allowNull: false,
+            unique: {
+                  msg: "Phone number already exist"
+            },
+            validate: {
                   isNumeric: true
             }
       },
       email: {
             type: DataTypes.TEXT,
-            unique: true,
-            validate:{
-                  isEmail:true
+            allowNull: false,
+            unique: {
+                  msg: "Email already exist"
+            },
+            validate: {
+                  isEmail: true
             }
       },
       active: {
@@ -44,9 +50,9 @@ const Customer_Details = sequelize.define(EvergreenTable.customer_details, {
       },
       pincode: {
             type: DataTypes.REAL,
-            validate:{
-                  min:110000,
-                  max:900000
+            validate: {
+                  min: 110000,
+                  max: 900000
             }
       }
       , member: {
@@ -108,5 +114,5 @@ const Employees = sequelize.define(EvergreenTable.employees, {
       freezeTableName: true
 });
 
-module.exports = { Customers, Customer_Details,Vendors,Employees };
+module.exports = { Customers, Customer_Details, Vendors, Employees };
 
