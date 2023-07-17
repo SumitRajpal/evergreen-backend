@@ -57,7 +57,7 @@ const ErrorHandler = (err, req, res, next) => {
   }).end();
 }
 app.use(ErrorHandler)
-sequelize.sync({alter :true}).then((results) => {
+sequelize.sync({force :true}).then((results) => {
   console.log(results)
 }).catch(error => {
   console.log(error)

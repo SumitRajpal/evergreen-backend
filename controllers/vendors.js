@@ -1,4 +1,4 @@
-const { Customers, Customer_Details, Vendors } = require("../models/customers");
+const { Users, User_Details, Vendors } = require("../models/users");
 const { EvergreenTable } = require("../utils/constants");
 const sequelize = require("../utils/database");
 /**
@@ -18,12 +18,12 @@ const sequelize = require("../utils/database");
  */
 const getVendors = async (request, response, next) => {
   try {
-    const vendors = await Customers.findAndCountAll({
+    const vendors = await Users.findAndCountAll({
       where: request.body,
       limit: 20,
       offset: 0,
       include: [{ model: Vendors, required:true,as: "vendors", attributes: { exclude: "id" } },
-      { model: Customer_Details, as: "customer_details", attributes: { exclude: "customer_id" } }],
+      { model: User_Details, as: "user_details", attributes: { exclude: "user_id" } }],
     });
     response.status(200).json(vendors).end();
   } catch (error) {
@@ -55,11 +55,11 @@ const getVendors = async (request, response, next) => {
 const getVendorsById = async (request, response, next) => {
   const id = request.params.id;
   try {
-    const vendors = await Customers.findByPk(id, {
+    const vendors = await Users.findByPk(id, {
       include: [{
         model: Vendors,
         as: "vendors", required:true,attributes: { exclude: "id" }
-      },{ model: Customer_Details, as: "customer_details", attributes: { exclude: "customer_id" } }],
+      },{ model: User_Details, as: "user_details", attributes: { exclude: "user_id" } }],
     });
     response.status(200).json(vendors).end();
   } catch (error) {

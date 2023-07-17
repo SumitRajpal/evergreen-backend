@@ -2,7 +2,7 @@ const EvergreenTable = require('../utils/constants');
 const sequelize = require('../utils/database')
 const { DataTypes } = require('sequelize');
 
-const Customers = sequelize.define(EvergreenTable.customers, {
+const Users = sequelize.define(EvergreenTable.users, {
       id: {
             type: DataTypes.UUID,
             allowNull: false,
@@ -41,8 +41,8 @@ const Customers = sequelize.define(EvergreenTable.customers, {
       freezeTableName: true
 });
 
-const Customer_Details = sequelize.define(EvergreenTable.customer_details, {
-      customer_id: {
+const User_Details = sequelize.define(EvergreenTable.user_details, {
+      user_id: {
             type: DataTypes.UUID,
             allowNull: false,
             primaryKey: true,
@@ -114,5 +114,5 @@ const Employees = sequelize.define(EvergreenTable.employees, {
       freezeTableName: true
 });
 
-module.exports = { Customers, Customer_Details, Vendors, Employees };
+module.exports = { User_Details, Users, Vendors, Employees };
 

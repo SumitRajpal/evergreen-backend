@@ -1,4 +1,4 @@
-const { Customers, Customer_Details, Employees } = require("../models/customers");
+const { Users, User_Details, Employees } = require("../models/users");
 const { EvergreenTable } = require("../utils/constants");
 
 /**
@@ -18,12 +18,12 @@ const { EvergreenTable } = require("../utils/constants");
  */
 const getEmployees = async (request, response, next) => {
   try {
-    const employees = await Customers.findAndCountAll({
+    const employees = await Users.findAndCountAll({
       where: request.body,
       limit: 20,
       offset: 0,
       include: [{ model: Employees,required:true , as: "employees", attributes: { exclude: "id" }},
-      { model: Customer_Details, as: "customer_details", attributes: { exclude: "customer_id" } }],
+      { model: User_Details, as: "user_details", attributes: { exclude: "user_id" } }],
     });
     response.status(200).json(employees).end();
   } catch (error) {
@@ -55,7 +55,7 @@ const getEmployees = async (request, response, next) => {
 const getEmployeeById = async (request, response, next) => {
   const id = request.params.id;
   try {
-    const employees = await Customers.findByPk(id, {
+    const employees = await Users.findByPk(id, {
       include: {
         model: Employees,
         as: "employees",required:true, attributes: { exclude: "id" }

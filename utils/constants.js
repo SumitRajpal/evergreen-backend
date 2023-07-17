@@ -1,6 +1,6 @@
 
 const EvergreenTable = {
-      customers:"customers",customer_details:"customer_details",
+      users:"users",user_details:"user_details",
       vendors:"vendors",employees:"employees"
 }
 
