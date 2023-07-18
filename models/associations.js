@@ -1,5 +1,5 @@
 const { User_Details, Users, Vendors, Employees } = require('./users');
-const EvergreenTable = require('../utils/constants');
+const {EvergreenTable} = require('../utils/constants');
 const { Products, Inventory, Price, Offer, Stale } = require('./products');
 
 /**
@@ -79,5 +79,5 @@ Stale.belongsTo(Products, {
 })
 
 module.exports = {
-      Users, User_Details,Products,Inventory,Price
+      Users, User_Details, Vendors, Employees,Products,Inventory,Price,Stale,Offer
 }

@@ -1,4 +1,4 @@
-const EvergreenTable = require('../utils/constants');
+const {EvergreenTable} = require('../utils/constants');
 const sequelize = require('../utils/database')
 const { DataTypes } = require('sequelize');
 

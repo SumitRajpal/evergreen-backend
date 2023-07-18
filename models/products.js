@@ -1,5 +1,5 @@
 const { DataTypes } = require("sequelize");
-const { PRODUCT_CATEGORY, EvergreenTable } = require("../utils/constants");
+const {PRODUCT_CATEGORY, EvergreenTable } = require("../utils/constants");
 const sequelize = require("../utils/database");
 
 const Products = sequelize.define(EvergreenTable.products, {
@@ -113,5 +113,6 @@ const Stale = sequelize.define(EvergreenTable.stale, {
       timestamps: false,
       freezeTableName: true
 });
+
 module.exports = { Products, Inventory,Price,Offer,Stale };
 
