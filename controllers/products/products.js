@@ -1,4 +1,4 @@
-const { Products } = require("../../models/products");
+const { Products, Offer, Price, Stale, Inventory } = require("../../models/products");
 const { Users } = require("../../models/users");
 const { EvergreenTable } = require("../../utils/constants");
 const sequelize = require("../../utils/database");
@@ -22,7 +22,11 @@ const getProducts = async (request, response, next) => {
     const products = await Products.findAndCountAll({
       where: request.body,
       limit: 20,
-      offset: 0
+      offset: 0,
+      include: [{ model: Offer, as: "offer", attributes: { exclude: "product_id" }},
+      { model: Price, as: "price" , attributes: { exclude: "product_id" }},
+      { model: Inventory, as: "inventory" , attributes: { exclude: "product_id" }}],
+      order:[[Price,'start_at','DESC']]
     });
     response.status(200).json(products).end();
   } catch (error) {

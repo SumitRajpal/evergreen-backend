@@ -1,5 +1,6 @@
 const { Router } = require('express');
 const router = Router();
+router.use('/constants', require('../routes/constants'))
 router.use('/users', require('../routes/users'))
 router.use('/vendors', require('../routes/vendors'))
 router.use('/employees', require('../routes/employees'))

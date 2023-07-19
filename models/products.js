@@ -47,7 +47,6 @@ const Price = sequelize.define(EvergreenTable.price, {
       product_id: {
             type: DataTypes.UUID,
             allowNull: false,
-            primaryKey: true,
             defaultValue: DataTypes.UUIDV4
       },
       price: {
@@ -93,7 +92,6 @@ const Stale = sequelize.define(EvergreenTable.stale, {
       product_id: {
             type: DataTypes.UUID,
             allowNull: false,
-            primaryKey: true,
             defaultValue: DataTypes.UUIDV4
       },
       price: {
