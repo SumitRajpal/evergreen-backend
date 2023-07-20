@@ -1,5 +1,5 @@
 const { Cart } = require("../models/cart");
-const { Products, Offer } = require("../models/products");
+const { Products, Offer, Price, Inventory } = require("../models/products");
 const { Users, User_Details, Employees } = require("../models/users");
 const { EvergreenTable, TABLE_ASSOCIATION } = require("../utils/constants");
 
@@ -27,10 +27,12 @@ const getCart = async (request, response, next) => {
                         {
                               model: Products, required: true,
                               as: TABLE_ASSOCIATION.cart_product,
-                              attributes: { exclude: "id" }
+                              attributes: { exclude: "id" }, include: [{ model: Offer, as: "offer", attributes: { exclude: "product_id" } },
+                              { model: Price, as: "price", attributes: { exclude: "product_id" } },
+                              { model: Inventory, as: "inventory", attributes: { exclude: "product_id" } },
+                              ]
                         }
-                  ],  
-                  group:['cart_id']
+                  ],
             });
             response.status(200).json(cart).end();
       } catch (error) {
@@ -62,13 +64,20 @@ const getCart = async (request, response, next) => {
 const getCartById = async (request, response, next) => {
       const id = request.params.id;
       try {
-            const employees = await Users.findByPk(id, {
-                  include: {
-                        model: Employees,
-                        as: "employees", required: true, attributes: { exclude: "id" }
-                  },
+            const cart = await Cart.findAll({
+                  where: { user_id: id },
+                  include: [
+                        {
+                              model: Products, required: true,
+                              as: TABLE_ASSOCIATION.cart_product,
+                              attributes: { exclude: "id" }, include: [{ model: Offer, as: "offer", attributes: { exclude: "product_id" } },
+                              { model: Price, as: "price", attributes: { exclude: "product_id" } },
+                              { model: Inventory, as: "inventory", attributes: { exclude: "product_id" } },
+                              ]
+                        }
+                  ]
             });
-            response.status(200).json(employees).end();
+            response.status(200).json(cart).end();
       } catch (error) {
             next(error);
       }

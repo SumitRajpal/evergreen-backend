@@ -19,29 +19,12 @@ const Cart = sequelize.define(EvergreenTable.cart, {
             allowNull: false,
             defaultValue: DataTypes.UUIDV4
       },
-      price: {
-            type: DataTypes.INTEGER,
-            defaultValue: 0
-      },
-      final_price: {
-            type: DataTypes.INTEGER,
-            defaultValue: 0
-      },
       quantity: {
             type: DataTypes.INTEGER,
             defaultValue: 0
-      },
-      quantity: {
-            type: DataTypes.INTEGER,
-            defaultValue: 0
-      },
-      transaction:{
-            type:DataTypes.BOOLEAN,
-            defaultValue:false
       }
-
 }, {
-      timestamps: true,
+      timestamps: false,
       freezeTableName: true,
       underscored:true
 });
