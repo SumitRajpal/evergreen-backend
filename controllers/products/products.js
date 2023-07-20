@@ -23,9 +23,10 @@ const getProducts = async (request, response, next) => {
       where: request.body,
       limit: 20,
       offset: 0,
-      include: [{ model: Offer, as: "offer", attributes: { exclude: "product_id" }},
+      include: [{  model: Offer, as: "offer", attributes: { exclude: "product_id" }},
       { model: Price, as: "price" , attributes: { exclude: "product_id" }},
-      { model: Inventory, as: "inventory" , attributes: { exclude: "product_id" }}],
+      { model: Inventory, as: "inventory" , attributes: { exclude: "product_id" }},
+     ],
       order:[[Price,'start_at','DESC']]
     });
     response.status(200).json(products).end();
