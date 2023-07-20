@@ -14,6 +14,8 @@ DB Schema : https://dbdiagram.io/d/646f5c747764f72fcfd65b67
 
 - Vendors & Employee models [association, controller, testing, swagger]. &#9989;
 
-Product Model [offer, stale, product,price,inventory]. &#9989;
+- Product Model [offer, stale, product,price,inventory]. &#9989;
+
+- Routes protection [xss, jwt, rate limiter,Authorization ] 
 - Validations & Constraints 
 </details>

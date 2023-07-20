@@ -9,5 +9,6 @@ router.use('/inventory', require('../routes/inventory'))
 router.use('/offer', require('../routes/offer'))
 router.use('/price', require('../routes/price'))
 router.use('/stale', require('../routes/stale'))
+router.use('/cart', require('../routes/cart'))
 
 module.exports = router;

@@ -1,6 +1,7 @@
 const { User_Details, Users, Vendors, Employees } = require('./users');
-const {EvergreenTable} = require('../utils/constants');
+const { EvergreenTable, TABLE_ASSOCIATION } = require('../utils/constants');
 const { Products, Inventory, Price, Offer, Stale } = require('./products');
+const { Cart } = require('./cart');
 
 /**
  * @association users->user_details
@@ -78,6 +79,28 @@ Stale.belongsTo(Products, {
       as: EvergreenTable.products
 })
 
+/**
+ * @association user->cart
+ */
+Users.hasOne(Cart, {
+      foreignKey: "user_id", sourceKey: "id", as: TABLE_ASSOCIATION.user_cart
+});
+/**
+ * @association cart->user
+ */
+
+Cart.belongsTo(Users, {
+      foreignKey: "user_id",
+      as: TABLE_ASSOCIATION.cart_user
+})
+/**
+ * @association cart->product
+ */
+Cart.hasMany(Products, {
+      foreignKey: "product_id", sourceKey: "product_id",
+      as: TABLE_ASSOCIATION.cart_product
+});
+
 module.exports = {
-      Users, User_Details, Vendors, Employees,Products,Inventory,Price,Stale,Offer
+      Cart, Users, User_Details, Vendors, Employees, Products, Inventory, Price, Stale, Offer
 }

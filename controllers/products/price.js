@@ -21,7 +21,8 @@ const getPrice = async (request, response, next) => {
                   where: request.body,
                   limit: 20,
                   offset: 0,
-                  include: { model: Price, as: 'price'},
+                  include: [{ model: Price, as: 'price'},
+                  { model: Offer, as: 'offer'}],
             });
             response.status(200).json(offer).end();
       } catch (error) {
