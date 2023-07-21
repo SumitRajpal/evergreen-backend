@@ -6,7 +6,6 @@ const Cart = sequelize.define(EvergreenTable.cart, {
       cart_id: {
             type: DataTypes.UUID,
             allowNull: false,
-            primaryKey: true,
             defaultValue: DataTypes.UUIDV4
       },
       product_id: {
@@ -28,4 +27,47 @@ const Cart = sequelize.define(EvergreenTable.cart, {
       freezeTableName: true,
       underscored:true
 });
-module.exports = {Cart};
+
+const Cart_Details = sequelize.define(EvergreenTable.cart_details, {
+      cart_id: {
+            type: DataTypes.UUID,
+            allowNull: false,
+            defaultValue: DataTypes.UUIDV4
+      },
+      product_id: {
+            type: DataTypes.UUID,
+            allowNull: false,
+            defaultValue: DataTypes.UUIDV4
+      },
+      user_id: {
+            type: DataTypes.UUID,
+            allowNull: false,
+            defaultValue: DataTypes.UUIDV4
+      },
+      quantity: {
+            type: DataTypes.INTEGER,
+            defaultValue: 0
+      },
+      price: {
+            type: DataTypes.INTEGER,
+            defaultValue: 0
+      },
+      final_price: {
+            type: DataTypes.INTEGER,
+            defaultValue: 0
+      },
+      total_discount: {
+            type: DataTypes.INTEGER,
+            defaultValue: 0
+      },
+      total_weight: {
+            type: DataTypes.INTEGER,
+            defaultValue: 0
+      }
+}, {
+      timestamps: true,
+      freezeTableName: true,
+      underscored:true
+});
+Cart_Details.removeAttribute('id');
+module.exports = {Cart,Cart_Details};

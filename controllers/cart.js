@@ -1,6 +1,6 @@
 const { Cart } = require("../models/cart");
 const { Products, Offer, Price, Inventory } = require("../models/products");
-const { Users, User_Details, Employees } = require("../models/users");
+const { Users, Employees } = require("../models/users");
 const { EvergreenTable, TABLE_ASSOCIATION } = require("../utils/constants");
 
 /**
@@ -115,9 +115,9 @@ const setCart = async (request, response, next) => {
 
 const putCart = async (request, response, next) => {
       try {
-            const employees = await Employees.update(request.body,
+            const cart = await Cart.update(request.body,
                   { where: { id: request.params.id } });
-            response.status(200).json({ message: employees ? "Updated Successfully" : "Updation Failed" }).end();
+            response.status(200).json({ message: cart ? "Updated Successfully" : "Updation Failed" }).end();
       } catch (error) {
             next(error);
       }
