@@ -18,5 +18,6 @@ DB Schema : https://dbdiagram.io/d/646f5c747764f72fcfd65b67
 
 - Routes protection [xss, jwt, rate limiter,Authorization ] 
 - Subscription model
+- Roles Model 
 - Validations & Constraints 
 </details>

@@ -1,6 +1,5 @@
 const { Cart } = require("../models/cart");
 const { Products, Offer, Price, Inventory } = require("../models/products");
-const { Users, Employees } = require("../models/users");
 const { EvergreenTable, TABLE_ASSOCIATION } = require("../utils/constants");
 
 /**

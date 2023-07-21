@@ -10,5 +10,7 @@ router.use('/offer', require('../routes/offer'))
 router.use('/price', require('../routes/price'))
 router.use('/stale', require('../routes/stale'))
 router.use('/cart', require('../routes/cart'))
+router.use('/cart-details', require('../routes/cart-details'))
+
 
 module.exports = router;

@@ -112,5 +112,5 @@ Cart_Details.hasMany(Products, {
       as: TABLE_ASSOCIATION.cart_product
 });
 module.exports = {
-      Cart, Users, User_Details, Vendors, Employees, Products, Inventory, Price, Stale, Offer
+      Cart_Details,Cart, Users, User_Details, Vendors, Employees, Products, Inventory, Price, Stale, Offer
 }

@@ -3,7 +3,7 @@ const EvergreenTable = {
       users: "users", user_details: "user_details",
       vendors: "vendors", employees: "employees",
       products: 'products', inventory: 'inventory',
-      cart: 'cart',cart_details:'cart_details',
+      cart: 'cart', cart_details: 'cart_details',
       price: 'price', offer: 'offer', stale: 'stale'
 }
 const TABLE_ASSOCIATION = {
@@ -19,6 +19,7 @@ const STATUS = ['ORDERED', 'CANCELLED', 'RECEIVED',
       'RETURNED', 'COMING', 'REFUNDED', 'PACKED',
       'TRANSFERRED', 'INITIATED'];
 const CART_TYPE = ['PURCHASE', 'SALE', 'RETURN'];
+const ROLES_TYPE = ['SUPER_ADMIN', 'MANAGER', 'DRIVER', 'EMPLOYEE', 'USER', 'VENDOR'];
 const INVOICE_CATEGORY = ['SALARY', 'VENDOR', 'CUSTOMER', 'EXPENSES'];
 const PRODUCT_CATEGORY = ['FRUITS', 'VEGETABLES', 'SNACK', 'POWDER', 'MILK'];
 module.exports = {
@@ -27,5 +28,6 @@ module.exports = {
       CART_TYPE,
       PRODUCT_CATEGORY,
       INVOICE_CATEGORY,
-      STATUS
+      STATUS,
+      ROLES_TYPE
 }
