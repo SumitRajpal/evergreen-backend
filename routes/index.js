@@ -12,5 +12,4 @@ router.use('/stale', require('../routes/stale'))
 router.use('/cart', require('../routes/cart'))
 router.use('/cart-details', require('../routes/cart-details'))
 
-
 module.exports = router;

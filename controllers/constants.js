@@ -1,5 +1,5 @@
 
-const { CART_TYPE, ROLES_TYPE,PRODUCT_CATEGORY, INVOICE_CATEGORY, STATUS } = require("../utils/constants");
+const { CART_CATEGORY, ROLES_TYPE,PRODUCT_CATEGORY, INVOICE_CATEGORY, STATUS } = require("../utils/constants");
 
 /**
  * @swagger
@@ -22,7 +22,7 @@ const { CART_TYPE, ROLES_TYPE,PRODUCT_CATEGORY, INVOICE_CATEGORY, STATUS } = req
 const getConstants = async (request, response, next) => {
   try {
        const allConstant = {
-        ROLES_TYPE,CART_TYPE, PRODUCT_CATEGORY, INVOICE_CATEGORY, STATUS 
+        ROLES_TYPE,CART_CATEGORY, PRODUCT_CATEGORY, INVOICE_CATEGORY, STATUS 
        }
         response.status(200).json(allConstant).end();
       } catch (error) {
