@@ -1,10 +1,14 @@
 const express = require('express');
+const hpp = require('hpp');
+const  helmet  = require("helmet");
+const rateLimit = require('express-rate-limit')
 const swaggerJSDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 const bodyParser = require('body-parser');
 var compression = require('compression')
 const sequelize = require('./utils/database')
 var cors = require('cors');
+
 const { Association } = require('./models/associations');
 const app = express();
 
@@ -45,6 +49,16 @@ app.use(function (error,req, res, next) {
 app.options('*', cors())
  app.use(bodyParser.urlencoded({ extended: true }))
  app.use(bodyParser.json());
+ app.use(helmet());
+ app.disable('x-powered-by');
+ app.use(hpp());
+ const limiter = rateLimit({
+	windowMs: 1 * 60 * 1000, 
+	max: 20, 
+	standardHeaders: true,
+	legacyHeaders: false, 
+})
+app.use(limiter)
 app.use(require('./routes/index'))
 const ErrorHandler = (err, req, res, next) => {
   const errStatus = err.statusCode || 500;
