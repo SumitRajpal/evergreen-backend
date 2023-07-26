@@ -1,4 +1,4 @@
-const {EvergreenTable} = require('../utils/constants');
+const { EvergreenTable } = require('../utils/constants');
 const sequelize = require('../utils/database')
 const { DataTypes } = require('sequelize');
 
@@ -24,7 +24,7 @@ const Users = sequelize.define(EvergreenTable.users, {
       },
       email: {
             type: DataTypes.TEXT,
-            allowNull: false,
+            allowNull: true,
             unique: {
                   msg: "Email already exist"
             },
