@@ -1,6 +1,8 @@
 const { Users, User_Details } = require("../models/users");
 const { EvergreenTable } = require("../utils/constants");
 const sequelize = require("../utils/database");
+const jwt = require('jsonwebtoken');
+const { promisify } = require('util')
 /**
  * @swagger
  * /customers:
@@ -61,7 +63,7 @@ const getUsersById = async (request, response, next) => {
       },
     });
     response.status(200).json(customers).end();
-  } catch(error) {
+  } catch (error) {
     next(error)
   }
 };

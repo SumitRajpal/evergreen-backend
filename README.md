@@ -16,8 +16,8 @@ DB Schema : https://dbdiagram.io/d/646f5c747764f72fcfd65b67
 
 - Product Model [offer, stale, product,price,inventory]. &#9989;
 
-- Routes protection [xss, jwt, rate limiter,Authorization ] 
-- Subscription model
+- Routes protection [xss, jwt, rate limiter,Authorization ]  &#9989;
+- Subscription model  &#9989;
 - Roles Model 
 - Validations & Constraints 
 </details>
