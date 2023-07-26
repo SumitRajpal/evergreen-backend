@@ -11,5 +11,5 @@ router.use('/price', require('../routes/price'))
 router.use('/stale', require('../routes/stale'))
 router.use('/cart', require('../routes/cart'))
 router.use('/cart-details', require('../routes/cart-details'))
-
+router.use('/subscription', require('../routes/subscription'))
 module.exports = router;

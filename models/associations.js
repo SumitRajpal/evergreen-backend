@@ -4,6 +4,7 @@ const { Products, Inventory, Price, Offer, Stale } = require('./products');
 const { Cart, Cart_Details } = require('./cart');
 const { Invoice } = require('./invoice');
 const { Payment } = require('./payment');
+const { Subscription } = require('./subscription');
 
 /**
  * @association users->user_details
@@ -147,6 +148,19 @@ Payment.belongsTo(Invoice, {
       foreignKey: "invoice_id",
       as: TABLE_ASSOCIATION.payment_invoice
 })
+
+/**
+ * @subscription
+ */
+Users.hasMany(Subscription, {
+      foreignKey: "user_id", sourceKey: "id",
+      as: TABLE_ASSOCIATION.user_subscription
+});
+
+Subscription.belongsTo(Users, {
+      foreignKey: "user_id",
+      as: TABLE_ASSOCIATION.subscription_user
+});
 
 module.exports = {
       Payment,Invoice,Cart_Details, Cart, Users, User_Details, Vendors, Employees, Products, Inventory, Price, Stale, Offer
