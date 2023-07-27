@@ -6,6 +6,7 @@ const EvergreenTable = {
       cart: 'cart', cart_details: 'cart_details',
       invoice:'invoice',payment:'payment',
       subscription:'subscription',
+      permission:'permission',
       price: 'price', offer: 'offer', stale: 'stale'
 }
 const TABLE_ASSOCIATION = {
@@ -31,11 +32,11 @@ const STATUS = ['ORDERED', 'CANCELLED', 'RECEIVED',
       'ACCEPTED', 'DELIVERED', 'PENDING',
       'RETURNED', 'COMING', 'REFUNDED', 'PACKED',
       'TRANSFERRED', 'INITIATED'];
-      const TRANSACTION_TYPE = ['DEBIT','CREDIT'];
+      const TRANSACTION_TYPE = ['DEBIT','CREDIT','FREE'];
       const PAYMENT_MODE = ['CASH','CARD','COIN','UPI','COUPON'];
 const CART_CATEGORY = ['PURCHASE', 'SALE', 'RETURN'];
 const ROLES_TYPE = ['SUPER_ADMIN', 'MANAGER', 'DRIVER', 'EMPLOYEE', 'USER', 'VENDOR'];
-const INVOICE_CATEGORY = ['SALARY', 'VENDOR', 'CUSTOMER', 'EXPENSES'];
+const INVOICE_CATEGORY = ['SALARY', 'VENDOR', 'CUSTOMER', 'EXPENSES','RETURN'];
 const PRODUCT_CATEGORY = ['FRUITS', 'VEGETABLES', 'SNACK', 'POWDER', 'MILK'];
 module.exports = {
       TABLE_ASSOCIATION,

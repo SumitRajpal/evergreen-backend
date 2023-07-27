@@ -2,6 +2,7 @@ const { Users, User_Details } = require("../models/users");
 const { EvergreenTable } = require("../utils/constants");
 const sequelize = require("../utils/database");
 const jwt = require('jsonwebtoken');
+const { PERMISSIONS } = require("./auth/permission");
 
 /**
  * @swagger
@@ -165,6 +166,7 @@ const signIn = async (request, response, next) => {
       }]
     });
     customers.dataValues.accessToken = awtToken
+    customers.dataValues.roles_key = PERMISSIONS[customers.dataValues.user_role]
     response.status(200).json(customers).end();
   
   } catch (error) {

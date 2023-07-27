@@ -19,6 +19,7 @@ DB Schema : https://dbdiagram.io/d/646f5c747764f72fcfd65b67
 - Routes protection [xss, jwt, rate limiter,Authorization ] &#9989;
 - Subscription model &#9989;
 - Redis cache
-- Roles Model 
+- Roles Model &#9989;
+- Database Backup 
 - Validate [Model, Constraints, Swagger route] 
 </details>

@@ -1,4 +1,4 @@
-const { EvergreenTable } = require('../utils/constants');
+const { EvergreenTable, ROLES_TYPE } = require('../utils/constants');
 const sequelize = require('../utils/database')
 const { DataTypes } = require('sequelize');
 
@@ -31,6 +31,11 @@ const Users = sequelize.define(EvergreenTable.users, {
             validate: {
                   isEmail: true
             }
+      },
+      user_role:{
+            type: DataTypes.ENUM,
+            values: ROLES_TYPE,
+            defaultValue:'USER'
       },
       active: {
             type: DataTypes.BOOLEAN,
