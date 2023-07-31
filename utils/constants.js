@@ -7,6 +7,7 @@ const EvergreenTable = {
       invoice:'invoice',payment:'payment',
       subscription:'subscription',
       permission:'permission',
+      version:'version',
       price: 'price', offer: 'offer', stale: 'stale'
 }
 const TABLE_ASSOCIATION = {

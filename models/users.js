@@ -9,7 +9,7 @@ const Users = sequelize.define(EvergreenTable.users, {
             primaryKey: true,
             defaultValue: DataTypes.UUIDV4
       },
-      fullname: {
+      username: {
             type: DataTypes.STRING,
       }
       , phone: {

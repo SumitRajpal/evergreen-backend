@@ -6,7 +6,7 @@ const authenticateJWT = (request, response, next) => {
             const token = authHeader.split(' ')[1];
             jwt.verify(token, 'mysecret', (err, user) => {
                   if (err) {
-                        next(err);
+                        response.status(401).json(err)
                   }
                   next();
             });

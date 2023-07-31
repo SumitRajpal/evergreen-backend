@@ -13,4 +13,5 @@ router.use('/cart', require('../routes/cart'))
 router.use('/cart-details', require('../routes/cart-details'))
 router.use('/subscription', require('../routes/subscription'))
 router.use('/auth', require('./auth'))
+router.use('/utils', require('./utils'))
 module.exports = router;

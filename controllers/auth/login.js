@@ -1,8 +1,6 @@
 const { Users, User_Details } = require("../../models/users");
-const sequelize = require("../../utils/database");
 const jwt = require('jsonwebtoken');
 const { PERMISSIONS } = require("./permission");
-
 
 /**
  * @swagger
@@ -27,7 +25,7 @@ const { PERMISSIONS } = require("./permission");
  */
 const login = async (request, response, next) => {
   try {
-    const awtToken = await jwt.sign(request.body, "mysecret", { expiresIn: '30d' });
+    const awtToken = await jwt.sign(request.body, "mysecret", { expiresIn: 200 });
     const [customers, created] = await Users.findOrCreate({
       where: request.body,
       defaults: {
