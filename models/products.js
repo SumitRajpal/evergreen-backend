@@ -14,7 +14,8 @@ const Products = sequelize.define(EvergreenTable.products, {
             type: DataTypes.ENUM,
             values: PRODUCT_CATEGORY
       },
-      scale:{
+      company_name:{ type: DataTypes.STRING},
+      weight:{
             type:DataTypes.INTEGER,
             defaultValue:0
       },
