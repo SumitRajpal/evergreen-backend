@@ -1,6 +1,7 @@
 
 const EvergreenTable = {
       users: "users", user_details: "user_details",
+      user_address:"user_address",
       vendors: "vendors", employees: "employees",
       products: 'products', inventory: 'inventory',
       cart: 'cart', cart_details: 'cart_details',
@@ -26,8 +27,9 @@ const TABLE_ASSOCIATION = {
       payment_invoice:'payment_invoice',
       invoice_payment:'invoice_payment',
       user_subscription:'user_subscription',
-      subscription_user:'subscription_user'
-
+      subscription_user:'subscription_user',
+      user_address:"user_address",
+      address_user:"address_user"
 }
 const STATUS = ['ORDERED', 'CANCELLED', 'RECEIVED',
       'ACCEPTED', 'DELIVERED', 'PENDING',

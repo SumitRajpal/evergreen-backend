@@ -32,10 +32,10 @@ const Users = sequelize.define(EvergreenTable.users, {
                   isEmail: true
             }
       },
-      user_role:{
+      user_role: {
             type: DataTypes.ENUM,
             values: ROLES_TYPE,
-            defaultValue:'USER'
+            defaultValue: 'USER'
       },
       active: {
             type: DataTypes.BOOLEAN,
@@ -52,6 +52,35 @@ const User_Details = sequelize.define(EvergreenTable.user_details, {
             allowNull: false,
             primaryKey: true,
             defaultValue: DataTypes.UUIDV4
+      }
+      , member: {
+            type: DataTypes.SMALLINT
+      },
+      children: {
+            type: DataTypes.SMALLINT,
+      },
+      government_id: {
+            type: DataTypes.TEXT
+      },
+      referral_id: {
+            type: DataTypes.TEXT,
+            unique: true
+      }
+}, {
+      timestamps: false,
+      freezeTableName: true
+});
+
+const User_Address = sequelize.define(EvergreenTable.user_address, {
+      address_id: {
+            type: DataTypes.UUID,
+            allowNull: false,
+            primaryKey: true,
+            defaultValue: DataTypes.UUIDV4
+      },
+      user_id: {
+            type: DataTypes.UUID,
+            allowNull: true,
       },
       pincode: {
             type: DataTypes.REAL,
@@ -59,12 +88,6 @@ const User_Details = sequelize.define(EvergreenTable.user_details, {
                   min: 110000,
                   max: 900000
             }
-      }
-      , member: {
-            type: DataTypes.SMALLINT
-      },
-      children: {
-            type: DataTypes.SMALLINT,
       },
       address_1: {
             type: DataTypes.TEXT
@@ -74,13 +97,6 @@ const User_Details = sequelize.define(EvergreenTable.user_details, {
       },
       location: {
             type: DataTypes.TEXT
-      },
-      government_id: {
-            type: DataTypes.TEXT
-      },
-      referral_id: {
-            type: DataTypes.TEXT,
-            unique: true
       }
 }, {
       timestamps: false,
@@ -119,5 +135,5 @@ const Employees = sequelize.define(EvergreenTable.employees, {
       freezeTableName: true
 });
 
-module.exports = { User_Details, Users, Vendors, Employees };
+module.exports = { User_Details, Users, Vendors, Employees, User_Address };
 

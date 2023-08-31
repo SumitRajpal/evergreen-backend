@@ -19,7 +19,7 @@ const { PERMISSIONS } = require("./auth/permission");
  *         schema:
  *           $ref: '#/definitions/Users'
  */
-const getUsers = async (request, response, next) => {
+const getAddress = async (request, response, next) => {
   try {
     const customers = await Users.findAndCountAll({
       where: request.body,
@@ -55,14 +55,11 @@ const getUsers = async (request, response, next) => {
  *         schema:
  *           $ref: '#/definitions/Customer'
  */
-const getUsersById = async (request, response, next) => {
+const getAddressById = async (request, response, next) => {
   const id = request.params.id;
   try {
-    const customers = await Users.findByPk(id, {
-      include: {
-        model: User_Details,
-        as: "user_details", attributes: { exclude: "user_id" }
-      },
+    const customers = await User_Address.findAll({
+      where: { user_id: id },
     });
     response.status(200).json(customers).end();
   } catch (error) {
@@ -90,15 +87,9 @@ const getUsersById = async (request, response, next) => {
  *       200:
  *         description: Successfully created
  */
-const setUsers = async (request, response, next) => {
+const setAddress = async (request, response, next) => {
   try {
-    const customers = await Users.create(request.body,
-      {
-        include: [{
-          model: User_Details,
-          as: "user_details"
-        }]
-      })
+    const customers = await User_Address.create(request.body)
     response.status(200).json(customers).end();
   } catch (error) {
     next(error)
@@ -107,81 +98,21 @@ const setUsers = async (request, response, next) => {
 };
 
 
-const putUsers = async (request, response, next) => {
+const putAddress = async (request, response, next) => {
   try {
-    const transaction = await sequelize.transaction();
     const customer = await Users.update(request.body,
-      { where: { id: request.params.id } },
-      { transaction });
-
-    const user_details = await User_Details.update(request.body.user_details,
-      { where: { user_id: request.params.id } },
-      { transaction });
-
-    await transaction.commit();
+      { where: { address_id: request.params.id } });
     response.status(200).json({ message: "Updated Successfully" }).end();
   } catch (error) {
     next(error);
-    if (transaction) {
-      await transaction.rollback();
-    }
   }
 
 };
-
-
-/**
- * @swagger
- * /customers/{id}:
- *   get:
- *     tags:
- *       - Customer by Id
- *     description: Returns a single customer
- *     produces:
- *       - application/json
- *     parameters:
- *       - id: id
- *         description: Users's id
- *         in: path
- *         required: true
- *         type: integer
- *     responses:
- *       200:
- *         description: A single Customer Details
- *         schema:
- *           $ref: '#/definitions/Customer'
- */
-const signIn = async (request, response, next) => {
-  try {
-    const awtToken = await jwt.sign(request.body, "mysecret", { expiresIn: '30d' });
-    const [customers, created] = await Users.findOrCreate({
-      where: request.body,
-      defaults: {
-        user_details: {
-          referral_id: String(request.body.phone).substring(0, 4).concat(Math.random().toString(36).substring(2, 7).toUpperCase())
-        }
-      },
-      include: [{
-        model: User_Details,
-        as: "user_details"
-      }]
-    });
-    customers.dataValues.accessToken = awtToken
-    customers.dataValues.roles_key = PERMISSIONS[customers.dataValues.user_role]
-    response.status(200).json(customers).end();
-
-  } catch (error) {
-    next(error)
-  }
-};
-
-
 
 
 module.exports = {
-  getUsers,
-  getUsersById,
-  setUsers,
-  putUsers,
-  signIn
+  getAddress,
+  getAddressById,
+  setAddress,
+  putAddress
 };

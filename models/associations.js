@@ -1,4 +1,4 @@
-const { User_Details, Users, Vendors, Employees } = require('./users');
+const { User_Details, Users, Vendors, Employees, User_Address } = require('./users');
 const { EvergreenTable, TABLE_ASSOCIATION } = require('../utils/constants');
 const { Products, Inventory, Price, Offer, Stale } = require('./products');
 const { Cart, Cart_Details } = require('./cart');
@@ -13,6 +13,16 @@ Users.hasOne(User_Details, {
       foreignKey: "user_id", sourceKey: "id", as: EvergreenTable.user_details
 });
 User_Details.belongsTo(Users, { foreignKey: "user_id", as: EvergreenTable.users })
+
+Users.hasMany(User_Address, {
+      foreignKey: "user_id", sourceKey: "id",
+      as: TABLE_ASSOCIATION.user_address
+});
+
+User_Address.belongsTo(Users, {
+      foreignKey: "user_id",
+      as: TABLE_ASSOCIATION.address_user
+});
 
 /**
  * @association customer->vendors
@@ -163,5 +173,5 @@ Subscription.belongsTo(Users, {
 });
 
 module.exports = {
-      Payment,Invoice,Cart_Details, Cart, Users, User_Details, Vendors, Employees, Products, Inventory, Price, Stale, Offer
+      User_Address,Payment,Invoice,Cart_Details, Cart, Users, User_Details, Vendors, Employees, Products, Inventory, Price, Stale, Offer
 }
