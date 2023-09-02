@@ -22,7 +22,7 @@ const { PERMISSIONS } = require("./auth/permission");
 const getUsers = async (request, response, next) => {
   try {
     const customers = await Users.findAndCountAll({
-      where: request.body,
+      where: request.query,
       limit: 20,
       offset: 0,
       include: [{ model: User_Details, as: "user_details", attributes: { exclude: "user_id" } },
@@ -32,6 +32,7 @@ const getUsers = async (request, response, next) => {
   } catch (error) {
     next(error);
   }
+
 };
 
 /**
@@ -164,6 +165,9 @@ const signIn = async (request, response, next) => {
       include: [{
         model: User_Details,
         as: "user_details"
+      },{
+        model: User_Address,
+        as: "user_address"
       }]
     });
     customers.dataValues.accessToken = awtToken
@@ -177,11 +181,10 @@ const signIn = async (request, response, next) => {
 
 
 
-
 module.exports = {
   getUsers,
   getUsersById,
   setUsers,
   putUsers,
-  signIn
+  signIn,
 };

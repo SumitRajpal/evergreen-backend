@@ -20,7 +20,7 @@ const sequelize = require("../../utils/database");
 const getProducts = async (request, response, next) => {
   try {
     const products = await Products.findAndCountAll({
-      where: request.body,
+      where: request.params,
       limit: 20,
       offset: 0,
       include: [{  model: Offer, as: "offer", attributes: { exclude: "product_id" }},

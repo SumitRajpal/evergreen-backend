@@ -37,7 +37,10 @@ const Cart_Details = sequelize.define(EvergreenTable.cart_details, {
       product_id: {
             type: DataTypes.UUID,
             allowNull: false,
-            defaultValue: DataTypes.UUIDV4
+      },
+      offer_id: {
+            type: DataTypes.UUID,
+            allowNull: true,
       },
       user_id: {
             type: DataTypes.UUID,

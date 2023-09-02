@@ -1,5 +1,5 @@
 const { DataTypes } = require("sequelize");
-const {PRODUCT_CATEGORY, EvergreenTable } = require("../utils/constants");
+const { PRODUCT_CATEGORY, EvergreenTable } = require("../utils/constants");
 const sequelize = require("../utils/database");
 
 const Products = sequelize.define(EvergreenTable.products, {
@@ -14,12 +14,16 @@ const Products = sequelize.define(EvergreenTable.products, {
             type: DataTypes.ENUM,
             values: PRODUCT_CATEGORY
       },
-      company_name:{ type: DataTypes.STRING},
-      weight:{
-            type:DataTypes.INTEGER,
-            defaultValue:0
+      company_name: { type: DataTypes.STRING },
+      weight: {
+            type: DataTypes.INTEGER,
+            defaultValue: 0
       },
-      tags: { type: DataTypes.JSON,defaultValue: [] },
+      bundle: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: false
+      },
+      tags: { type: DataTypes.JSON, defaultValue: [] },
       picture: { type: DataTypes.STRING },
       active: {
             type: DataTypes.BOOLEAN,
@@ -81,6 +85,19 @@ const Offer = sequelize.define(EvergreenTable.offer, {
             type: DataTypes.INTEGER,
             defaultValue: 0
       },
+      quantity: {
+            type: DataTypes.INTEGER,
+            defaultValue: 0
+      },
+      free: {
+            type: DataTypes.INTEGER,
+            defaultValue: 0
+      },
+      type: {
+            type: DataTypes.ENUM,
+            defaultValue: "PERCENTAGE",
+            values: ["PERCENTAGE", "FREE"]
+      },
       start_at: {
             type: 'TIMESTAMP',
             defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
@@ -117,5 +134,5 @@ const Stale = sequelize.define(EvergreenTable.stale, {
       freezeTableName: true
 });
 
-module.exports = { Products, Inventory,Price,Offer,Stale };
+module.exports = { Products, Inventory, Price, Offer, Stale };
 
