@@ -10,11 +10,14 @@ const Products = sequelize.define(EvergreenTable.products, {
             defaultValue: DataTypes.UUIDV4
       },
       name: { type: DataTypes.STRING },
+      regional_name: { type: DataTypes.STRING },
       category: {
             type: DataTypes.ENUM,
-            values: PRODUCT_CATEGORY
+            values: PRODUCT_CATEGORY,
+            defaultValue: 'FRUITS'
       },
-      company_name: { type: DataTypes.STRING },
+      company_name:
+            { type: DataTypes.STRING, defaultValue: null },
       weight: {
             type: DataTypes.INTEGER,
             defaultValue: 0
@@ -23,8 +26,11 @@ const Products = sequelize.define(EvergreenTable.products, {
             type: DataTypes.BOOLEAN,
             defaultValue: false
       },
-      tags: { type: DataTypes.JSON, defaultValue: [] },
-      picture: { type: DataTypes.STRING },
+      tags: {
+            type: DataTypes.ARRAY(DataTypes.TEXT),
+            defaultValue: []
+      },
+      image: { type: DataTypes.STRING, defaultValue: null },
       active: {
             type: DataTypes.BOOLEAN,
             defaultValue: true

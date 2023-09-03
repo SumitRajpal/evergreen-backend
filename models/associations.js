@@ -116,14 +116,14 @@ Cart_Details.belongsTo(Users, {
 /**
  * @association cart->product
  */
-Cart.hasMany(Products, {
-      foreignKey: "product_id", sourceKey: "product_id",
-      as: TABLE_ASSOCIATION.cart_product
-});
-Cart_Details.hasMany(Products, {
-      foreignKey: "product_id", sourceKey: "product_id",
-      as: TABLE_ASSOCIATION.cart_product
-});
+// Cart.hasMany(Products, {
+//       foreignKey: "product_id", sourceKey: "product_id",
+//       as: TABLE_ASSOCIATION.cart_product
+// });
+// Cart_Details.hasMany(Products, {
+//       foreignKey: "product_id", sourceKey: "product_id",
+//       as: TABLE_ASSOCIATION.cart_product
+// });
 
 /***
  * @invoices

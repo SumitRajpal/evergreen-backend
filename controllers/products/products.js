@@ -1,7 +1,9 @@
+const { Op } = require("sequelize");
 const { Products, Offer, Price, Stale, Inventory } = require("../../models/products");
 const { Users } = require("../../models/users");
 const { EvergreenTable } = require("../../utils/constants");
 const sequelize = require("../../utils/database");
+const { getPagination, getPagingData } = require("../../utils/pagination");
 /**
  * @swagger
  * /customers:
@@ -18,18 +20,24 @@ const sequelize = require("../../utils/database");
  *           $ref: '#/definitions/Users'
  */
 const getProducts = async (request, response, next) => {
+  const { page, size } = request.query;
+  const { limit, offset } = getPagination(page, size);
+  console.log(request.query.filter)
   try {
     const products = await Products.findAndCountAll({
-      where: request.params,
-      limit: 20,
-      offset: 0,
-      include: [{  model: Offer, as: "offer", attributes: { exclude: "product_id" }},
-      { model: Price, as: "price" , attributes: { exclude: "product_id" }},
-      { model: Inventory, as: "inventory" , attributes: { exclude: "product_id" }},
-     ],
-      order:[[Price,'start_at','DESC']]
+      where: {tags:{
+        [Op.contains]: request.query.filter?.tags ? [request.query.filter.tags] : []
+    }},
+      limit,
+      offset,
+      include: [{ model: Offer, as: "offer", attributes: { exclude: "product_id" } },
+      { model: Price, as: "price", attributes: { exclude: "product_id" } },
+      { model: Inventory, as: "inventory", attributes: { exclude: "product_id" } },
+      ],
+      order: [[Price, 'start_at', 'DESC']]
     });
-    response.status(200).json(products).end();
+    const productResponse = getPagingData(products, page, limit);
+    response.status(200).json(productResponse).end();
   } catch (error) {
     next(error);
   }
@@ -61,7 +69,7 @@ const getProductsById = async (request, response, next) => {
   try {
     const products = await Products.findByPk(id);
     response.status(200).json(products).end();
-  } catch(error) {
+  } catch (error) {
     next(error)
   }
 };
@@ -87,11 +95,15 @@ const getProductsById = async (request, response, next) => {
  *         description: Successfully created
  */
 const setProducts = async (request, response, next) => {
-  try {
-    const products = await Products.create(request.body)
-    response.status(200).json(products).end();
-  } catch (error) {
-    next(error)
+  if (Array.isArray(request.body)) {
+    try {
+      const products = await Products.bulkCreate(request.body)
+      response.status(200).json(products).end();
+    } catch (error) {
+      next(error)
+    }
+  } else {
+    next({ status: 400, message: "Request body should be an array" })
   }
 
 };

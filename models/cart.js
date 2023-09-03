@@ -3,6 +3,13 @@ const { EvergreenTable } = require("../utils/constants");
 const sequelize = require("../utils/database");
 
 const Cart = sequelize.define(EvergreenTable.cart, {
+      
+      id:{
+            type: DataTypes.UUID,
+            allowNull: false,
+            defaultValue: DataTypes.UUIDV4,
+            primaryKey:true
+      },
       cart_id: {
             type: DataTypes.UUID,
             allowNull: false,
@@ -29,6 +36,14 @@ const Cart = sequelize.define(EvergreenTable.cart, {
 });
 
 const Cart_Details = sequelize.define(EvergreenTable.cart_details, {
+      
+      id:{
+            type: DataTypes.UUID,
+            allowNull: false,
+            defaultValue: DataTypes.UUIDV4,
+            primaryKey:true,
+            unique:true
+      },
       cart_id: {
             type: DataTypes.UUID,
             allowNull: false,
@@ -72,5 +87,4 @@ const Cart_Details = sequelize.define(EvergreenTable.cart_details, {
       freezeTableName: true,
       underscored:true
 });
-Cart_Details.removeAttribute('id');
 module.exports = {Cart,Cart_Details};
