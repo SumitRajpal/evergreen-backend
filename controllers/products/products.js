@@ -1,9 +1,10 @@
 const { Op } = require("sequelize");
 const { Products, Offer, Price, Stale, Inventory } = require("../../models/products");
 const { Users } = require("../../models/users");
-const { EvergreenTable } = require("../../utils/constants");
+const { EvergreenTable, TABLE_ASSOCIATION } = require("../../utils/constants");
 const sequelize = require("../../utils/database");
 const { getPagination, getPagingData } = require("../../utils/pagination");
+const { Category } = require("../../models/category");
 /**
  * @swagger
  * /customers:
@@ -22,17 +23,20 @@ const { getPagination, getPagingData } = require("../../utils/pagination");
 const getProducts = async (request, response, next) => {
   const { page, size } = request.query;
   const { limit, offset } = getPagination(page, size);
-  console.log(request.query.filter)
+
   try {
     const products = await Products.findAndCountAll({
-      where: {tags:{
-        [Op.contains]: request.query.filter?.tags ? [request.query.filter.tags] : []
-    }},
+      where: {
+        tags: {
+          [Op.contains]: request.query.filter?.tags ? [request.query.filter.tags] : []
+        }
+      },
       limit,
       offset,
-      include: [{ model: Offer, as: "offer", attributes: { exclude: "product_id" } },
-      { model: Price, as: "price", attributes: { exclude: "product_id" } },
-      { model: Inventory, as: "inventory", attributes: { exclude: "product_id" } },
+      include: [{ model: Offer, as: TABLE_ASSOCIATION.product_offer,where:{active:true}, attributes: { exclude: ["product_id","start_at","end_at","active"] } },
+      { model: Price, as: "price", required:true, where:{active:true}, attributes: { exclude: ["product_id","start_at","end_at","active"] } },
+      { model: Inventory, as: TABLE_ASSOCIATION.product_inventory, required:true, attributes: { exclude: "product_id" } },
+      { model: Category, as: "product_category" }
       ],
       order: [[Price, 'start_at', 'DESC']]
     });
