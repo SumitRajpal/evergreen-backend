@@ -1,5 +1,5 @@
 const { Inventory, Products } = require("../../models/products");
-const { EvergreenTable } = require("../../utils/constants");
+const { EvergreenTable, TABLE_ASSOCIATION } = require("../../utils/constants");
 /**
  * @swagger
  * /customers:
@@ -21,7 +21,7 @@ const getInventory = async (request, response, next) => {
                   where: request.body,
                   limit: 20,
                   offset: 0,
-                  include: { model: Inventory, as: 'inventory', attributes: { exclude: "user_id" } },
+                  include: { model: Inventory, as: TABLE_ASSOCIATION.product_inventory, attributes: { exclude: "user_id" } },
             });
             response.status(200).json(customers).end();
       } catch (error) {

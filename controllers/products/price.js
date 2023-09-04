@@ -1,5 +1,5 @@
 const { Inventory, Products, Offer, Price } = require("../../models/products");
-const { EvergreenTable } = require("../../utils/constants");
+const { EvergreenTable, TABLE_ASSOCIATION } = require("../../utils/constants");
 /**
  * @swagger
  * /customers:
@@ -22,7 +22,7 @@ const getPrice = async (request, response, next) => {
                   limit: 20,
                   offset: 0,
                   include: [{ model: Price, as: 'price'},
-                  { model: Offer, as: 'offer'}],
+                  { model: Offer, as: TABLE_ASSOCIATION.product_offer}],
             });
             response.status(200).json(offer).end();
       } catch (error) {

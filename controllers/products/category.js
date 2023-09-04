@@ -1,4 +1,5 @@
-const { Inventory, Products, Offer } = require("../../models/products");
+const { Category } = require("../../models/category");
+const { Inventory, Products, Offer, Price } = require("../../models/products");
 const { EvergreenTable, TABLE_ASSOCIATION } = require("../../utils/constants");
 /**
  * @swagger
@@ -15,13 +16,10 @@ const { EvergreenTable, TABLE_ASSOCIATION } = require("../../utils/constants");
  *         schema:
  *           $ref: '#/definitions/Users'
  */
-const getOffer = async (request, response, next) => {
+const getCategory = async (request, response, next) => {
       try {
-            const offer = await Products.findAndCountAll({
+            const offer = await Category.findAndCountAll({
                   where: request.body,
-                  limit: 20,
-                  offset: 0,
-                  include: { model: Offer, as: TABLE_ASSOCIATION.product_offer, attributes: { exclude: "user_id" } },
             });
             response.status(200).json(offer).end();
       } catch (error) {
@@ -50,16 +48,12 @@ const getOffer = async (request, response, next) => {
  *         schema:
  *           $ref: '#/definitions/Customer'
  */
-const getOfferById = async (request, response, next) => {
-      const id = request.params.id;
+const getCategoryById = async (request, response, next) => {
+      const id = request?.params?.id;
       try {
-            const products = await Products.findByPk(id, {
-                  include: {
-                        model: Offer,
-                        as: "offer"
-                  }
+            const price = await Category.findByPk(id, {   
             });
-            response.status(200).json(products).end();
+            response.status(200).json(price).end();
       } catch (error) {
             next(error)
       }
@@ -85,20 +79,20 @@ const getOfferById = async (request, response, next) => {
  *       200:
  *         description: Successfully created
  */
-const setOffer = async (request, response, next) => {
+const setCategory = async (request, response, next) => {
       try {
-            const offer = await Offer.create(request.body)
-            response.status(200).json(offer).end();
+            const category = await Category.bulkCreate(request.body)
+            response.status(200).json(category).end();
       } catch (error) {
             next(error)
       }
 
 };
 
-const putOffer = async (request, response, next) => {
+const putCategory = async (request, response, next) => {
       try {
-            const offer = await Offer.update(request.body,
-                  { where: { product_id: request.params.id } },
+            const offer = await Category.update(request.body,
+                  { where: { category_id: request.params.id } },
             );
             response.status(200).json({ message: "Updated Successfully" }).end();
       } catch (error) {
@@ -110,8 +104,8 @@ const putOffer = async (request, response, next) => {
 
 
 module.exports = {
-      getOffer,
-      getOfferById,
-      setOffer,
-      putOffer
+      getCategory,
+      getCategoryById,
+      setCategory,
+      putCategory
 };

@@ -9,6 +9,7 @@ const EvergreenTable = {
       subscription:'subscription',
       permission:'permission',
       version:'version',
+      category:'category',
       price: 'price', offer: 'offer', stale: 'stale'
 }
 const TABLE_ASSOCIATION = {
@@ -29,7 +30,15 @@ const TABLE_ASSOCIATION = {
       user_subscription:'user_subscription',
       subscription_user:'subscription_user',
       user_address:"user_address",
-      address_user:"address_user"
+      address_user:"address_user",
+      product_category:"product_category",
+      category_product:"category_product",
+      product_price:"product_price",
+      price_product:"price_product",
+      product_offer:"product_offer",
+      offer_product:"offer_product",
+      product_inventory:"product_inventory",
+      inventory_product:"inventory_product"
 }
 const STATUS = ['ORDERED', 'CANCELLED', 'RECEIVED',
       'ACCEPTED', 'DELIVERED', 'PENDING',

@@ -11,10 +11,9 @@ const Products = sequelize.define(EvergreenTable.products, {
       },
       name: { type: DataTypes.STRING },
       regional_name: { type: DataTypes.STRING },
-      category: {
-            type: DataTypes.ENUM,
-            values: PRODUCT_CATEGORY,
-            defaultValue: 'FRUITS'
+      category_id: {
+            type: DataTypes.UUID,
+            allowNull: true,
       },
       company_name:
             { type: DataTypes.STRING, defaultValue: null },
@@ -59,14 +58,23 @@ const Inventory = sequelize.define(EvergreenTable.inventory, {
       freezeTableName: true
 });
 const Price = sequelize.define(EvergreenTable.price, {
+      price_id:{
+            type: DataTypes.UUID,
+            allowNull: false,
+            primaryKey:true,
+            defaultValue: DataTypes.UUIDV4
+      },
       product_id: {
             type: DataTypes.UUID,
             allowNull: false,
-            defaultValue: DataTypes.UUIDV4
       },
       price: {
             type: DataTypes.INTEGER,
             defaultValue: 0
+      },
+      active: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: true
       },
       start_at: {
             type: 'TIMESTAMP',
@@ -104,6 +112,10 @@ const Offer = sequelize.define(EvergreenTable.offer, {
             defaultValue: "PERCENTAGE",
             values: ["PERCENTAGE", "FREE"]
       },
+      active: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: true
+      },
       start_at: {
             type: 'TIMESTAMP',
             defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
@@ -130,7 +142,10 @@ const Stale = sequelize.define(EvergreenTable.stale, {
             type: DataTypes.INTEGER,
             defaultValue: 0
       },
-
+      active: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: true,
+      },
       stale_at: {
             type: 'TIMESTAMP',
             defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
