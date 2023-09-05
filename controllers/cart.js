@@ -1,6 +1,9 @@
+const { uuid } = require('uuidv4');
 const { Cart } = require("../models/cart");
 const { Products, Offer, Price, Inventory } = require("../models/products");
 const { EvergreenTable, TABLE_ASSOCIATION } = require("../utils/constants");
+const { Op } = require('sequelize');
+const { Category } = require('../models/category');
 
 /**
  * @swagger
@@ -19,24 +22,23 @@ const { EvergreenTable, TABLE_ASSOCIATION } = require("../utils/constants");
  */
 const getCart = async (request, response, next) => {
       try {
-            const cart = await Cart.findAndCountAll({
-                  limit: 20,
-                  offset: 0,
-                  include: [
-                        {
-                              model: Products, required: true,
-                              as: TABLE_ASSOCIATION.cart_product,
-                              attributes: { exclude: "id" }, include: [{ model: Offer, as: "offer", attributes: { exclude: "product_id" } },
-                              { model: Price, as: "price", attributes: { exclude: "product_id" } },
-                              { model: Inventory, as: "inventory", attributes: { exclude: "product_id" } },
-                              ]
-                        }
-                  ],
+            const products = await Products.findAndCountAll({
+              where: {
+                product_id: {
+                  [Op.in]: request.query.filter?.product_id
+                }
+              },
+              include: [{ model: Offer, as: TABLE_ASSOCIATION.product_offer, where: { active: true }, attributes: { exclude: ["product_id", "start_at", "end_at", "active"] } },
+              { model: Price, as: "price", required: true, where: { active: true }, attributes: { exclude: ["product_id", "start_at", "end_at", "active"] } },
+              { model: Inventory, as: TABLE_ASSOCIATION.product_inventory, required: true, attributes: { exclude: "product_id" } },
+              { model: Category, as: "product_category" }
+              ],
+              order: [[Price, 'start_at', 'DESC']]
             });
-            response.status(200).json(cart).end();
-      } catch (error) {
+            response.status(200).json(products).end();
+          } catch (error) {
             next(error);
-      }
+          }
 };
 
 /**

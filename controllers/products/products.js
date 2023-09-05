@@ -23,20 +23,20 @@ const { Category } = require("../../models/category");
 const getProducts = async (request, response, next) => {
   const { page, size } = request.query;
   const { limit, offset } = getPagination(page, size);
-
+  
   try {
     const products = await Products.findAndCountAll({
       where: {
         tags: {
           [Op.contains]: request.query.filter?.tags ? [request.query.filter.tags] : []
-        }
+        },
       },
       limit,
       offset,
-      include: [{ model: Offer, as: TABLE_ASSOCIATION.product_offer,where:{active:true}, attributes: { exclude: ["product_id","start_at","end_at","active"] } },
-      { model: Price, as: "price", required:true, where:{active:true}, attributes: { exclude: ["product_id","start_at","end_at","active"] } },
-      { model: Inventory, as: TABLE_ASSOCIATION.product_inventory, required:true, attributes: { exclude: "product_id" } },
-      { model: Category, as: "product_category" }
+      include: [{ model: Offer, as: TABLE_ASSOCIATION.product_offer, where: { active: true }, attributes: { exclude: ["product_id", "start_at", "end_at", "active"] } },
+      { model: Price, as: "price", required: true, where: { active: true }, attributes: { exclude: ["product_id", "start_at", "end_at", "active"] } },
+      { model: Inventory, as: TABLE_ASSOCIATION.product_inventory, required: true, attributes: { exclude: "product_id" } },
+      { model: Category, as: "product_category", where: {} }
       ],
       order: [[Price, 'start_at', 'DESC']]
     });
@@ -130,5 +130,5 @@ module.exports = {
   getProducts,
   getProductsById,
   setProducts,
-  putProducts
+  putProducts,
 };
