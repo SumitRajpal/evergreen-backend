@@ -37,7 +37,12 @@ const TABLE_ASSOCIATION = {
       product_offer:"product_offer",
       offer_product:"offer_product",
       product_inventory:"product_inventory",
-      inventory_product:"inventory_product"
+      inventory_product:"inventory_product",
+      cart_details_price:"price",
+      price_cart_details:"price_cart_details",
+      cart_details_offer:"offer",
+      offer_cart_details:"offer_cart_details"
+
 }
 const STATUS = ['ORDERED', 'CANCELLED', 'RECEIVED',
       'ACCEPTED', 'DELIVERED', 'PENDING',

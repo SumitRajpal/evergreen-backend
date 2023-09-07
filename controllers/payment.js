@@ -112,11 +112,8 @@ const {payment,invoice,cart} = request?.body;
             }
             response.status(200).json(res).end();
       } catch (error) {
-
-            // If the execution reaches this line, an error was thrown.
-            // We rollback the transaction.
             await t.rollback();
-
+            next(error);
       }
 
 };

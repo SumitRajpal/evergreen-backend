@@ -2,7 +2,7 @@
 const { Cart_Details } = require("../models/cart");
 const { Invoice } = require("../models/invoice");
 const { Payment } = require("../models/payment");
-const { Products, Offer } = require("../models/products");
+const { Products, Offer, Price } = require("../models/products");
 const { TABLE_ASSOCIATION } = require("../utils/constants");
 const sequelize = require("../utils/database");
 const { getPagingData, getPagination } = require("../utils/pagination");
@@ -33,7 +33,8 @@ const getInvoice = async (request, response, next) => {
                   limit,
                   offset,
                   include: [{
-                        model: Cart_Details, as: TABLE_ASSOCIATION.invoice_cart_details, include: [{ model: Products, as: TABLE_ASSOCIATION.cart_details_product },
+                        model: Cart_Details, limit: 5, as: TABLE_ASSOCIATION.invoice_cart_details,
+                        include: [{ model: Products, as: TABLE_ASSOCIATION.cart_details_product },
                         ]
                   }],
 
@@ -70,7 +71,14 @@ const getInvoiceById = async (request, response, next) => {
       const id = request.params.id;
       try {
             const invoice = await Invoice.findByPk(id, {
-                  include: [{ model: Payment, as: TABLE_ASSOCIATION.invoice_payment }]
+                  include: [{
+                        model: Cart_Details, limit: 5, as: TABLE_ASSOCIATION.invoice_cart_details,
+                        include: [{ model: Products, as: TABLE_ASSOCIATION.cart_details_product },
+                              { model: Offer, as: TABLE_ASSOCIATION.cart_details_offer },
+                  { model: Price, as: TABLE_ASSOCIATION.cart_details_price }
+                        ]
+                  },{ model: Payment, as: TABLE_ASSOCIATION.invoice_payment },
+                  ]
             });
             response.status(200).json(invoice).end();
       } catch (error) {

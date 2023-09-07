@@ -17,4 +17,5 @@ router.use('/utils', require('./utils'))
 router.use('/category', require('./category'))
 router.use('/payment', require('./payment'))
 router.use('/invoice', require('./invoice'))
+router.use('/address', require('./address'))
 module.exports = router;

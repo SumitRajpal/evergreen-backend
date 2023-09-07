@@ -157,6 +157,26 @@ Cart_Details.belongsTo(Invoice, {
       as: TABLE_ASSOCIATION.cart_invoice
 })
 
+Cart_Details.hasOne(Price, {
+      foreignKey: "price_id", sourceKey: "price_id",
+      as: TABLE_ASSOCIATION.cart_details_price
+});
+
+Price.belongsTo(Cart_Details, {
+      foreignKey: "price_id",
+      as: TABLE_ASSOCIATION.price_cart_details
+})
+
+Cart_Details.hasOne(Offer, {
+      foreignKey: "id", sourceKey: "offer_id",
+      as: TABLE_ASSOCIATION.cart_details_offer
+});
+
+Offer.belongsTo(Cart_Details, {
+      foreignKey: "offer_id",
+      as: TABLE_ASSOCIATION.offer_cart_details
+})
+
 
 Invoice.belongsTo(Users, {
       foreignKey: "product_id",
@@ -173,6 +193,8 @@ Payment.belongsTo(Invoice, {
       foreignKey: "payment_id",
       as: TABLE_ASSOCIATION.payment_invoice
 })
+
+
 
 /**
  * @subscription
