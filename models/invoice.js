@@ -1,5 +1,5 @@
 const { DataTypes } = require("sequelize");
-const { EvergreenTable, STATUS, PRODUCT_CATEGORY } = require("../utils/constants");
+const { EvergreenTable, STATUS, PRODUCT_CATEGORY, INVOICE_CATEGORY } = require("../utils/constants");
 const sequelize = require("../utils/database");
 
 const Invoice = sequelize.define(EvergreenTable.invoice, {
@@ -9,53 +9,44 @@ const Invoice = sequelize.define(EvergreenTable.invoice, {
             primaryKey: true,
             defaultValue: DataTypes.UUIDV4
       },
-      cart_id: {
-            type: DataTypes.UUID,
-            allowNull: false,
-            defaultValue: DataTypes.UUIDV4
+      invoice_category: {
+            type: DataTypes.ENUM,
+            values: INVOICE_CATEGORY,
+            allowNull: false
+      },
+      invoice_date: {
+            type: 'TIMESTAMP',
+            defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
       },
       user_id: {
             type: DataTypes.UUID,
             allowNull: false,
             defaultValue: DataTypes.UUIDV4
       },
+      grand_total: {
+            type: DataTypes.INTEGER,
+            defaultValue: 0
+      },
       vehicle_id: {
             type: DataTypes.UUID,
             allowNull: false,
             defaultValue: DataTypes.UUIDV4
+      },
+      status: {
+            type: DataTypes.ENUM,
+            values: STATUS,
+            allowNull: false
       },
       employee_id: {
             type: DataTypes.UUID,
             allowNull: false,
             defaultValue: DataTypes.UUIDV4
       },
-      invoice_category: {
-            type: DataTypes.ENUM,
-            values: PRODUCT_CATEGORY,
+      payment_id: {
+            type: DataTypes.UUID,
             allowNull: false
-      },
-      invoice_status: {
-            type: DataTypes.ENUM,
-            values: STATUS,
-            allowNull: false
-      },
-      grand_total: {
-            type: DataTypes.INTEGER,
-            defaultValue: 0
-      },
-      grand_saving: {
-            type: DataTypes.INTEGER,
-            defaultValue: 0
-      },
-      total_quantity: {
-            type: DataTypes.INTEGER,
-            defaultValue: 0
       },
       delivery_date: {
-            type: 'TIMESTAMP',
-            defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
-      },
-      invoice_date: {
             type: 'TIMESTAMP',
             defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
       },

@@ -2,39 +2,6 @@ const { DataTypes } = require("sequelize");
 const { EvergreenTable } = require("../utils/constants");
 const sequelize = require("../utils/database");
 
-const Cart = sequelize.define(EvergreenTable.cart, {
-      
-      id:{
-            type: DataTypes.UUID,
-            allowNull: false,
-            defaultValue: DataTypes.UUIDV4,
-            primaryKey:true
-      },
-      cart_id: {
-            type: DataTypes.UUID,
-            allowNull: false,
-            defaultValue: DataTypes.UUIDV4
-      },
-      product_id: {
-            type: DataTypes.UUID,
-            allowNull: false,
-            defaultValue: DataTypes.UUIDV4
-      },
-      user_id: {
-            type: DataTypes.UUID,
-            allowNull: false,
-            defaultValue: DataTypes.UUIDV4
-      },
-      quantity: {
-            type: DataTypes.INTEGER,
-            defaultValue: 0
-      }
-}, {
-      timestamps: false,
-      freezeTableName: true,
-      underscored:true
-});
-
 const Cart_Details = sequelize.define(EvergreenTable.cart_details, {
       
       id:{
@@ -44,10 +11,9 @@ const Cart_Details = sequelize.define(EvergreenTable.cart_details, {
             primaryKey:true,
             unique:true
       },
-      cart_id: {
+      invoice_id: {
             type: DataTypes.UUID,
             allowNull: false,
-            defaultValue: DataTypes.UUIDV4
       },
       product_id: {
             type: DataTypes.UUID,
@@ -66,19 +32,11 @@ const Cart_Details = sequelize.define(EvergreenTable.cart_details, {
             type: DataTypes.INTEGER,
             defaultValue: 0
       },
-      price: {
-            type: DataTypes.INTEGER,
-            defaultValue: 0
+      price_id: {
+            type: DataTypes.UUID,
+            allowNull: false,
       },
-      final_price: {
-            type: DataTypes.INTEGER,
-            defaultValue: 0
-      },
-      total_discount: {
-            type: DataTypes.INTEGER,
-            defaultValue: 0
-      },
-      total_weight: {
+      weight: {
             type: DataTypes.INTEGER,
             defaultValue: 0
       }
@@ -87,4 +45,4 @@ const Cart_Details = sequelize.define(EvergreenTable.cart_details, {
       freezeTableName: true,
       underscored:true
 });
-module.exports = {Cart,Cart_Details};
+module.exports = {Cart_Details};

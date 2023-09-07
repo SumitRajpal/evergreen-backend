@@ -1,11 +1,78 @@
 const { User_Details, Users, Vendors, Employees, User_Address } = require('./users');
 const { EvergreenTable, TABLE_ASSOCIATION } = require('../utils/constants');
 const { Products, Inventory, Price, Offer, Stale } = require('./products');
-const { Cart, Cart_Details } = require('./cart');
+const { Cart_Details } = require('./cart');
 const { Invoice } = require('./invoice');
 const { Payment } = require('./payment');
 const { Subscription } = require('./subscription');
 const { Category } = require('./category');
+
+
+
+
+/**
+ * @association products->category
+ */
+Products.hasOne(Category, {
+      foreignKey: "category_id", sourceKey: "category_id",
+      as: TABLE_ASSOCIATION.product_category
+});
+
+Category.belongsTo(Products, {
+      foreignKey: "category_id",
+      as: TABLE_ASSOCIATION.category_product
+})
+
+/**
+ * @association products->inventory
+ */
+Products.hasOne(Inventory, {
+      foreignKey: "product_id", sourceKey: "product_id",
+      as: TABLE_ASSOCIATION.product_inventory
+});
+
+Inventory.belongsTo(Products, {
+      foreignKey: "product_id",
+      as: TABLE_ASSOCIATION.inventory_product
+})
+
+/**
+ * @association products->price
+ */
+Products.hasMany(Price, {
+      foreignKey: "product_id", sourceKey: "product_id",
+      as: EvergreenTable.price
+});
+
+Price.belongsTo(Products, {
+      foreignKey: "product_id",
+      as: EvergreenTable.products
+})
+
+/**
+ * @association products->offer
+ */
+Products.hasOne(Offer, {
+      foreignKey: "product_id", sourceKey: "product_id",
+      as: TABLE_ASSOCIATION.product_offer
+});
+
+Offer.belongsTo(Products, {
+      foreignKey: "product_id",
+      as: TABLE_ASSOCIATION.offer_product
+})
+/**
+ * @association products->stale
+ */
+Products.hasMany(Stale, {
+      foreignKey: "product_id", sourceKey: "product_id",
+      as: EvergreenTable.stale
+});
+
+Stale.belongsTo(Products, {
+      foreignKey: "product_id",
+      as: EvergreenTable.products
+})
 
 /**
  * @association users->user_details
@@ -42,70 +109,6 @@ Users.hasOne(Employees, {
 Employees.belongsTo(Users, { foreignKey: "id", as: EvergreenTable.users })
 
 
-/**
- * @association products->category
- */
-Products.hasOne(Category, {
-      foreignKey: "category_id", sourceKey: "category_id",
-      as: TABLE_ASSOCIATION.product_category
-});
-
-Category.belongsTo(Products,{
-      foreignKey:"category_id",
-      as:TABLE_ASSOCIATION.category_product
-})
-
-
-/**
- * @association products->inventory
- */
-Products.hasOne(Inventory, {
-      foreignKey: "product_id", sourceKey: "product_id",
-      as: TABLE_ASSOCIATION.product_inventory
-});
-
-Inventory.belongsTo(Products, {
-      foreignKey: "product_id",
-      as: TABLE_ASSOCIATION.inventory_product
-})
-
-/**
- * @association products->price
- */
-Products.hasMany(Price, {
-      foreignKey: "product_id", sourceKey: "product_id",
-      as: EvergreenTable.price
-});
-
-Price.belongsTo(Products, {
-      foreignKey: "product_id",
-      as: EvergreenTable.products
-})
-
-/**
- * @association products->offer
- */
-Products.hasMany(Offer, {
-      foreignKey: "product_id", sourceKey: "product_id",
-      as: TABLE_ASSOCIATION.product_offer
-});
-
-Offer.belongsTo(Products, {
-      foreignKey: "product_id",
-      as: TABLE_ASSOCIATION.offer_product
-})
-/**
- * @association products->stale
- */
-Products.hasMany(Stale, {
-      foreignKey: "product_id", sourceKey: "product_id",
-      as: EvergreenTable.stale
-});
-
-Stale.belongsTo(Products, {
-      foreignKey: "product_id",
-      as: EvergreenTable.products
-})
 
 
 
@@ -113,9 +116,7 @@ Stale.belongsTo(Products, {
 /**
  * @association user,userdetails -> cart
  */
-Users.hasOne(Cart, {
-      foreignKey: "user_id", sourceKey: "id", as: TABLE_ASSOCIATION.user_cart
-});
+
 Users.hasOne(Cart_Details, {
       foreignKey: "user_id", sourceKey: "id", as: TABLE_ASSOCIATION.user_cart_details
 });
@@ -123,10 +124,6 @@ Users.hasOne(Cart_Details, {
  * @association cart->user
  */
 
-Cart.belongsTo(Users, {
-      foreignKey: "user_id",
-      as: TABLE_ASSOCIATION.cart_user
-})
 Cart_Details.belongsTo(Users, {
       foreignKey: "user_id",
       as: TABLE_ASSOCIATION.cart_details_user
@@ -134,11 +131,8 @@ Cart_Details.belongsTo(Users, {
 /**
  * @association cart->product
  */
-Cart.hasMany(Products, {
-      foreignKey: "product_id", sourceKey: "product_id",
-      as: TABLE_ASSOCIATION.cart_product
-});
-Cart_Details.hasMany(Products, {
+
+Cart_Details.hasOne(Products, {
       foreignKey: "product_id", sourceKey: "product_id",
       as: TABLE_ASSOCIATION.cart_details_product
 });
@@ -153,27 +147,30 @@ Users.hasMany(Invoice, {
       as: TABLE_ASSOCIATION.user_invoice
 });
 
+Invoice.hasMany(Cart_Details, {
+      foreignKey: "invoice_id", sourceKey: "invoice_id",
+      as: TABLE_ASSOCIATION.invoice_cart_details
+});
+
+Cart_Details.belongsTo(Invoice, {
+      foreignKey: "invoice_id",
+      as: TABLE_ASSOCIATION.cart_invoice
+})
+
+
 Invoice.belongsTo(Users, {
       foreignKey: "product_id",
       as: TABLE_ASSOCIATION.invoice_user
 })
 
-Users.hasMany(Payment, {
-      foreignKey: "user_id", sourceKey: "id",
-      as: TABLE_ASSOCIATION.user_payment
-});
 
-Payment.belongsTo(Users, {
-      foreignKey: "user_id",
-      as: TABLE_ASSOCIATION.payment_user
-})
 
 Invoice.hasOne(Payment, {
-      foreignKey: "invoice_id", sourceKey: "invoice_id", as: TABLE_ASSOCIATION.invoice_payment
+      foreignKey: "payment_id", sourceKey: "payment_id", as: TABLE_ASSOCIATION.invoice_payment
 });
 
 Payment.belongsTo(Invoice, {
-      foreignKey: "invoice_id",
+      foreignKey: "payment_id",
       as: TABLE_ASSOCIATION.payment_invoice
 })
 
@@ -191,5 +188,18 @@ Subscription.belongsTo(Users, {
 });
 
 module.exports = {
-      Category, User_Address,Payment,Invoice,Cart_Details, Cart, Users, User_Details, Vendors, Employees, Products, Inventory, Price, Stale, Offer
+      Category,
+      User_Address,
+      Payment,
+      Cart_Details,
+      Invoice,
+      Users,
+      User_Details,
+      Vendors,
+      Employees,
+      Products,
+      Inventory,
+      Price,
+      Stale,
+      Offer
 }

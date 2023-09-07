@@ -89,10 +89,15 @@ const Price = sequelize.define(EvergreenTable.price, {
       freezeTableName: true
 });
 const Offer = sequelize.define(EvergreenTable.offer, {
-      product_id: {
+      id: {
             type: DataTypes.UUID,
             allowNull: false,
             primaryKey: true,
+            defaultValue: DataTypes.UUIDV4
+      },
+      product_id: {
+            type: DataTypes.UUID,
+            allowNull: false,
             defaultValue: DataTypes.UUIDV4
       },
       discount: {

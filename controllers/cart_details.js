@@ -1,7 +1,7 @@
 const { Cart_Details } = require("../models/cart");
 const { Products, Offer, Price, Inventory } = require("../models/products");
 const { EvergreenTable, TABLE_ASSOCIATION } = require("../utils/constants");
-
+const { v4: uuidv4 } = require('uuid');
 /**
  * @swagger
  * /employees:
@@ -101,9 +101,12 @@ const getCartDetailsById = async (request, response, next) => {
  *         description: Successfully created
  */
 const setCartDetails = async (request, response, next) => {
+         let cartId = uuidv4();
+      let requestObject = request.body;
+      requestObject?.map((data) => {return {...data,...{cart_id:cartId}}})
       try {
-            const cart = await Cart_Details.create(request.body)
-            response.status(200).json(cart).end();
+           // const cart = await Cart_Details.create(request.body)
+            response.status(200).json(requestObject).end();
       } catch (error) {
             next(error)
       }

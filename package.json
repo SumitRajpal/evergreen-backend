@@ -24,6 +24,6 @@
     "sequelize": "^6.32.1",
     "swagger-jsdoc": "^6.0.0",
     "swagger-ui-express": "^5.0.0",
-    "uuidv4": "^6.2.13"
+    "uuid": "^9.0.0"
   }
 }

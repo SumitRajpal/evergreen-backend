@@ -1,9 +1,8 @@
-const { uuid } = require('uuidv4');
-const { Cart } = require("../models/cart");
 const { Products, Offer, Price, Inventory } = require("../models/products");
 const { EvergreenTable, TABLE_ASSOCIATION } = require("../utils/constants");
 const { Op } = require('sequelize');
 const { Category } = require('../models/category');
+const { Cart_Details } = require("../models/cart");
 
 /**
  * @swagger
@@ -106,7 +105,7 @@ const getCartById = async (request, response, next) => {
  */
 const setCart = async (request, response, next) => {
       try {
-            const cart = await Cart.create(request.body)
+            const cart = await Cart_Details.create(request.body)
             response.status(200).json(cart).end();
       } catch (error) {
             next(error)
@@ -116,7 +115,7 @@ const setCart = async (request, response, next) => {
 
 const putCart = async (request, response, next) => {
       try {
-            const cart = await Cart.update(request.body,
+            const cart = await Cart_Details.update(request.body,
                   { where: { id: request.params.id } });
             response.status(200).json({ message: cart ? "Updated Successfully" : "Updation Failed" }).end();
       } catch (error) {

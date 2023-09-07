@@ -3,15 +3,10 @@ const { EvergreenTable, STATUS, PRODUCT_CATEGORY, TRANSACTION_TYPE, PAYMENT_MODE
 const sequelize = require("../utils/database");
 
 const Payment = sequelize.define(EvergreenTable.payment, {
-      invoice_id: {
+      payment_id: {
             type: DataTypes.UUID,
             allowNull: false,
             primaryKey: true,
-            defaultValue: DataTypes.UUIDV4
-      },
-      user_id: {
-            type: DataTypes.UUID,
-            allowNull: false,
             defaultValue: DataTypes.UUIDV4
       },
       type: {
@@ -19,7 +14,7 @@ const Payment = sequelize.define(EvergreenTable.payment, {
             values: TRANSACTION_TYPE,
             allowNull: false
       },
-      payment_mode: {
+      mode: {
             type: DataTypes.ENUM,
             values: PAYMENT_MODE,
             allowNull: false
