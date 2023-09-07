@@ -5,6 +5,7 @@ const { Payment } = require("../models/payment");
 const { Products, Offer } = require("../models/products");
 const { TABLE_ASSOCIATION } = require("../utils/constants");
 const sequelize = require("../utils/database");
+const { getPagingData, getPagination } = require("../utils/pagination");
 
 /**
  * @swagger
@@ -22,15 +23,23 @@ const sequelize = require("../utils/database");
  *           $ref: '#/definitions/Users'
  */
 const getInvoice = async (request, response, next) => {
+      const { page, size } = request.query;
+      const { limit, offset } = getPagination(page, size);
+
       try {
             const invoice = await Invoice.findAndCountAll({
-                  where: request.body,
-                  limit: 20,
-                  offset: 0,
-                  include: [{ model: Cart_Details, as: TABLE_ASSOCIATION.invoice_cart_details,include:[{model:Products,as:TABLE_ASSOCIATION.cart_details_product},
-                        ] }]
+                  where: {
+                  },
+                  limit,
+                  offset,
+                  include: [{
+                        model: Cart_Details, as: TABLE_ASSOCIATION.invoice_cart_details, include: [{ model: Products, as: TABLE_ASSOCIATION.cart_details_product },
+                        ]
+                  }],
+
             });
-            response.status(200).json(invoice).end();
+            const productResponse = getPagingData(invoice, page, limit);
+            response.status(200).json(productResponse).end();
       } catch (error) {
             next(error);
       }
