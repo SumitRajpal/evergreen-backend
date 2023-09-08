@@ -21,12 +21,8 @@ const { PERMISSIONS } = require("./auth/permission");
  */
 const getAddress = async (request, response, next) => {
   try {
-    const customers = await Users.findAndCountAll({
+    const customers = await User_Address.findAndCountAll({
       where: request.body,
-      limit: 20,
-      offset: 0,
-      include: [{ model: User_Details, as: "user_details", attributes: { exclude: "user_id" } },
-      { model: User_Address, as: "user_address", attributes: { exclude: "user_id" } }],
     });
     response.status(200).json(customers).end();
   } catch (error) {
@@ -100,7 +96,7 @@ const setAddress = async (request, response, next) => {
 
 const putAddress = async (request, response, next) => {
   try {
-    const customer = await Users.update(request.body,
+    const customer = await User_Address.update(request.body,
       { where: { address_id: request.params.id } });
     response.status(200).json({ message: "Updated Successfully" }).end();
   } catch (error) {

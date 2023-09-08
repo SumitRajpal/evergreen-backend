@@ -3,6 +3,7 @@ const { Cart_Details } = require("../models/cart");
 const { Invoice } = require("../models/invoice");
 const { Payment } = require("../models/payment");
 const { Products, Offer, Price } = require("../models/products");
+const { User_Address } = require("../models/users");
 const { TABLE_ASSOCIATION } = require("../utils/constants");
 const sequelize = require("../utils/database");
 const { getPagingData, getPagination } = require("../utils/pagination");
@@ -74,10 +75,11 @@ const getInvoiceById = async (request, response, next) => {
                   include: [{
                         model: Cart_Details, limit: 5, as: TABLE_ASSOCIATION.invoice_cart_details,
                         include: [{ model: Products, as: TABLE_ASSOCIATION.cart_details_product },
-                              { model: Offer, as: TABLE_ASSOCIATION.cart_details_offer },
-                  { model: Price, as: TABLE_ASSOCIATION.cart_details_price }
+                        { model: Offer, as: TABLE_ASSOCIATION.cart_details_offer },
+                        { model: Price, as: TABLE_ASSOCIATION.cart_details_price }
                         ]
-                  },{ model: Payment, as: TABLE_ASSOCIATION.invoice_payment },
+                  }, { model: Payment, as: TABLE_ASSOCIATION.invoice_payment },
+                     { model: User_Address, as: TABLE_ASSOCIATION.invoice_address }
                   ]
             });
             response.status(200).json(invoice).end();

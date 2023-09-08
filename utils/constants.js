@@ -41,7 +41,9 @@ const TABLE_ASSOCIATION = {
       cart_details_price:"price",
       price_cart_details:"price_cart_details",
       cart_details_offer:"offer",
-      offer_cart_details:"offer_cart_details"
+      offer_cart_details:"offer_cart_details",
+      invoice_address:"invoice_address",
+      address_invoice:"address_invoice",
 
 }
 const STATUS = ['ORDERED', 'CANCELLED', 'RECEIVED',

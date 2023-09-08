@@ -21,7 +21,10 @@ const Invoice = sequelize.define(EvergreenTable.invoice, {
       user_id: {
             type: DataTypes.UUID,
             allowNull: false,
-            defaultValue: DataTypes.UUIDV4
+      },
+      address_id: {
+            type: DataTypes.UUID,
+            allowNull: false,
       },
       grand_total: {
             type: DataTypes.INTEGER,

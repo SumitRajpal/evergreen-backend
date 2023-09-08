@@ -95,6 +95,9 @@ const User_Address = sequelize.define(EvergreenTable.user_address, {
       address_2: {
             type: DataTypes.TEXT,
       },
+      landmark:{
+            type: DataTypes.TEXT,
+      },
       location: {
             type: DataTypes.TEXT
       }

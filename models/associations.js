@@ -178,8 +178,18 @@ Offer.belongsTo(Cart_Details, {
 })
 
 
+Invoice.hasOne(User_Address, {
+      foreignKey: "address_id",
+      as: TABLE_ASSOCIATION.invoice_address
+});
+
+User_Address.belongsTo(Invoice, {
+      foreignKey: "address_id",
+      as: TABLE_ASSOCIATION.user_invoice
+})
+
 Invoice.belongsTo(Users, {
-      foreignKey: "product_id",
+      foreignKey: "user_id",
       as: TABLE_ASSOCIATION.invoice_user
 })
 
