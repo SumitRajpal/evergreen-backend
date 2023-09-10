@@ -86,29 +86,23 @@ const getPaymentById = async (request, response, next) => {
  *         description: Successfully created
  */
 const setPayment = async (request, response, next) => {
-      // try {
-      //       const payment = await Payment.create(request.body).then;
-      //       response.status(200).json(payment).end();
-      // } catch (error) {
-      //       next(error)
-      // }
 
       const t = await sequelize.transaction();
-const {payment,invoice,cart} = request?.body;
+      const { payment, invoice, cart } = request?.body;
       try {
-            
+
             const paymentResponse = await Payment.create(payment,
                   { transaction: t });
-                  invoice.payment_id = paymentResponse.dataValues.payment_id
-                  const invoiceResponse =  await Invoice.create(invoice, { transaction: t });
-                  const invoice_id = invoiceResponse.dataValues.invoice_id;
-                  const cartArray = cart.map(value => {return {...value,...{invoice_id:invoice_id}}} )
-                  const cartResponse =  await Cart_Details.bulkCreate(cartArray, { transaction: t });
+            invoice.payment_id = paymentResponse.dataValues.payment_id
+            const invoiceResponse = await Invoice.create(invoice, { transaction: t });
+            const invoice_id = invoiceResponse.dataValues.invoice_id;
+            const cartArray = cart.map(value => { return { ...value, ...{ invoice_id: invoice_id } } })
+            const cartResponse = await Cart_Details.bulkCreate(cartArray, { transaction: t });
             await t.commit();
             const res = {
-                  payment:paymentResponse,
-                  invoice:invoiceResponse,
-                  cart:cartResponse
+                  payment: paymentResponse,
+                  invoice: invoiceResponse,
+                  cart: cartResponse
             }
             response.status(200).json(res).end();
       } catch (error) {

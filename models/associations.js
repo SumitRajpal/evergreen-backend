@@ -173,13 +173,13 @@ Cart_Details.hasOne(Offer, {
 });
 
 Offer.belongsTo(Cart_Details, {
-      foreignKey: "offer_id",
+      foreignKey: "id",
       as: TABLE_ASSOCIATION.offer_cart_details
 })
 
 
 Invoice.hasOne(User_Address, {
-      foreignKey: "address_id",
+      foreignKey: "address_id",sourceKey: "address_id",
       as: TABLE_ASSOCIATION.invoice_address
 });
 
