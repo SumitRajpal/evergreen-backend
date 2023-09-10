@@ -25,5 +25,8 @@
     "swagger-jsdoc": "^6.0.0",
     "swagger-ui-express": "^5.0.0",
     "uuid": "^9.0.0"
+  },
+  "engines": {
+    "node": ">=16"
   }
 }
