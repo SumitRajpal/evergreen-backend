@@ -78,9 +78,13 @@ Stale.belongsTo(Products, {
  * @association users->user_details
  */
 Users.hasOne(User_Details, {
-      foreignKey: "user_id", sourceKey: "id", as: EvergreenTable.user_details
+      foreignKey: "user_id", sourceKey: "id",
+      as: EvergreenTable.user_details
 });
-User_Details.belongsTo(Users, { foreignKey: "user_id", as: EvergreenTable.users })
+User_Details.belongsTo(Users, {
+      foreignKey: "user_id",
+      as: EvergreenTable.users
+})
 
 Users.hasMany(User_Address, {
       foreignKey: "user_id", sourceKey: "id",
@@ -117,17 +121,18 @@ Employees.belongsTo(Users, { foreignKey: "id", as: EvergreenTable.users })
  * @association user,userdetails -> cart
  */
 
-Users.hasOne(Cart_Details, {
-      foreignKey: "user_id", sourceKey: "id", as: TABLE_ASSOCIATION.user_cart_details
-});
+// Users.hasOne(Cart_Details, {
+//       foreignKey: "user_id", sourceKey: "id", as: TABLE_ASSOCIATION.user_cart_details
+// });
+// Cart_Details.belongsTo(Users, {
+//       foreignKey: "user_id",
+//       as: TABLE_ASSOCIATION.cart_details_user
+// })
 /**
  * @association cart->user
  */
 
-Cart_Details.belongsTo(Users, {
-      foreignKey: "user_id",
-      as: TABLE_ASSOCIATION.cart_details_user
-})
+
 /**
  * @association cart->product
  */
@@ -146,6 +151,10 @@ Users.hasMany(Invoice, {
       foreignKey: "user_id", sourceKey: "id",
       as: TABLE_ASSOCIATION.user_invoice
 });
+Invoice.belongsTo(Users, {
+      foreignKey: "user_id",
+      as: TABLE_ASSOCIATION.invoice_user
+})
 
 Invoice.hasMany(Cart_Details, {
       foreignKey: "invoice_id", sourceKey: "invoice_id",
@@ -173,13 +182,13 @@ Cart_Details.hasOne(Offer, {
 });
 
 Offer.belongsTo(Cart_Details, {
-      foreignKey: "id",
+      foreignKey: "offer_id",
       as: TABLE_ASSOCIATION.offer_cart_details
 })
 
 
 Invoice.hasOne(User_Address, {
-      foreignKey: "address_id",sourceKey: "address_id",
+      foreignKey: "address_id", sourceKey: "address_id",
       as: TABLE_ASSOCIATION.invoice_address
 });
 
@@ -188,10 +197,7 @@ User_Address.belongsTo(Invoice, {
       as: TABLE_ASSOCIATION.user_invoice
 })
 
-Invoice.belongsTo(Users, {
-      foreignKey: "user_id",
-      as: TABLE_ASSOCIATION.invoice_user
-})
+
 
 
 

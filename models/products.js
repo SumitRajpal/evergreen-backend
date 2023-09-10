@@ -21,6 +21,11 @@ const Products = sequelize.define(EvergreenTable.products, {
             type: DataTypes.INTEGER,
             defaultValue: 0
       },
+      unit: {
+            type: DataTypes.ENUM,
+            defaultValue: "gm",
+            values: ["ml", "pc","gm"]
+      },
       bundle: {
             type: DataTypes.BOOLEAN,
             defaultValue: false
