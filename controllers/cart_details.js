@@ -66,7 +66,7 @@ const getCartDetailsById = async (request, response, next) => {
                   include: [
                         {
                               model: Products, required: true,
-                              as: TABLE_ASSOCIATION.cart_product,
+                              as: TABLE_ASSOCIATION.cart_details_product,
                               attributes: { exclude: "id" }, include: [{ model: Offer, as: "offer", attributes: { exclude: "product_id" } },
                               { model: Price, as: "price", attributes: { exclude: "product_id" } },
                               { model: Inventory, as: "inventory", attributes: { exclude: "product_id" } },

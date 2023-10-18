@@ -18,4 +18,5 @@ router.use('/category', require('./category'))
 router.use('/payment', require('./payment'))
 router.use('/invoice', require('./invoice'))
 router.use('/address', require('./address'))
+router.use('/information', require('./information'))
 module.exports = router;

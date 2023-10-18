@@ -1,10 +1,10 @@
-
-
 const { Cart_Details } = require("../models/cart");
 const { Invoice } = require("../models/invoice");
 const { Payment } = require("../models/payment");
+const { Inventory } = require("../models/products");
+const { CATEGORY_OBJECT } = require("../utils/constants");
 const sequelize = require("../utils/database");
-const { v4: uuidv4 } = require('uuid');
+const { v4: uuidv4 } = require("uuid");
 /**
  * @swagger
  * /customers:
@@ -21,16 +21,16 @@ const { v4: uuidv4 } = require('uuid');
  *           $ref: '#/definitions/Users'
  */
 const getPayment = async (request, response, next) => {
-      try {
-            const payment = await Payment.findAndCountAll({
-                  where: request.body,
-                  limit: 20,
-                  offset: 0
-            });
-            response.status(200).json(payment).end();
-      } catch (error) {
-            next(error);
-      }
+  try {
+    const payment = await Payment.findAndCountAll({
+      where: request.body,
+      limit: 20,
+      offset: 0,
+    });
+    response.status(200).json(payment).end();
+  } catch (error) {
+    next(error);
+  }
 };
 
 /**
@@ -55,14 +55,13 @@ const getPayment = async (request, response, next) => {
  *           $ref: '#/definitions/Customer'
  */
 const getPaymentById = async (request, response, next) => {
-      const id = request.params.id;
-      try {
-            const payment = await Payment.findByPk(id, {
-            });
-            response.status(200).json(payment).end();
-      } catch (error) {
-            next(error)
-      }
+  const id = request.params.id;
+  try {
+    const payment = await Payment.findByPk(id, {});
+    response.status(200).json(payment).end();
+  } catch (error) {
+    next(error);
+  }
 };
 
 /**
@@ -86,49 +85,62 @@ const getPaymentById = async (request, response, next) => {
  *         description: Successfully created
  */
 const setPayment = async (request, response, next) => {
+  const t = await sequelize.transaction();
+  const { payment, invoice, cart } = request?.body;
+  try {
+    const paymentResponse = await Payment.create(payment, { transaction: t });
+    invoice.payment_id = paymentResponse.dataValues.payment_id;
+    const invoiceResponse = await Invoice.create(invoice, { transaction: t });
+    const invoice_id = invoiceResponse.dataValues.invoice_id;
+    const cartArray = cart.map((value) => {
+      return { ...value, ...{ invoice_id: invoice_id } };
+    });
+    const cartResponse = await Cart_Details.bulkCreate(cartArray, {
+      transaction: t,
+    });
 
-      const t = await sequelize.transaction();
-      const { payment, invoice, cart } = request?.body;
-      try {
 
-            const paymentResponse = await Payment.create(payment,
-                  { transaction: t });
-            invoice.payment_id = paymentResponse.dataValues.payment_id
-            const invoiceResponse = await Invoice.create(invoice, { transaction: t });
-            const invoice_id = invoiceResponse.dataValues.invoice_id;
-            const cartArray = cart.map(value => { return { ...value, ...{ invoice_id: invoice_id } } })
-            const cartResponse = await Cart_Details.bulkCreate(cartArray, { transaction: t });
-            await t.commit();
-            const res = {
-                  payment: paymentResponse,
-                  invoice: invoiceResponse,
-                  cart: cartResponse
-            }
-            response.status(200).json(res).end();
-      } catch (error) {
-            await t.rollback();
-            next(error);
-      }
-
+    const updated = await Promise.all(
+      cart.map((cart) => {
+        return Inventory.update(
+          {
+            quantity: sequelize.literal(`quantity ${CATEGORY_OBJECT[invoice?.invoice_category] == 'DEBIT' ? '-' : '+'} ${cart?.quantity}`),
+          },
+          {
+            where: { product_id: cart.product_id },
+            transaction: t,
+          }
+        );
+      })
+    );
+    await t.commit();
+    const res = {
+      payment: paymentResponse,
+      invoice: invoiceResponse,
+      cart: cartResponse,
+      value: updated,
+    };
+    response.status(200).json(res).end();
+  } catch (error) {
+    await t.rollback();
+    next(error);
+  }
 };
 
 const putPayment = async (request, response, next) => {
-      try {
-            const payment = await Payment.update(request.body,
-                  { where: { product_id: request.params.id } },
-            );
-            response.status(200).json({ message: "Updated Successfully" }).end();
-      } catch (error) {
-            next(error);
-      }
-
+  try {
+    const payment = await Payment.update(request.body, {
+      where: { product_id: request.params.id },
+    });
+    response.status(200).json({ message: "Updated Successfully" }).end();
+  } catch (error) {
+    next(error);
+  }
 };
 
-
-
 module.exports = {
-      getPayment,
-      getPaymentById,
-      setPayment,
-      putPayment
+  getPayment,
+  getPaymentById,
+  setPayment,
+  putPayment,
 };

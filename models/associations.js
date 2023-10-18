@@ -147,14 +147,14 @@ Cart_Details.hasOne(Products, {
  */
 
 
-Users.hasMany(Invoice, {
-      foreignKey: "user_id", sourceKey: "id",
-      as: TABLE_ASSOCIATION.user_invoice
-});
-Invoice.belongsTo(Users, {
-      foreignKey: "user_id",
-      as: TABLE_ASSOCIATION.invoice_user
-})
+// Users.hasMany(Invoice, {
+//       foreignKey: "user_id", sourceKey: "id",
+//       as: TABLE_ASSOCIATION.user_invoice
+// });
+// Invoice.belongsTo(Users, {
+//       foreignKey: "user_id",
+//       as: TABLE_ASSOCIATION.invoice_user
+// })
 
 Invoice.hasMany(Cart_Details, {
       foreignKey: "invoice_id", sourceKey: "invoice_id",

@@ -2,7 +2,7 @@ const { DataTypes } = require("sequelize");
 const { EvergreenTable, STATUS, PRODUCT_CATEGORY, INVOICE_CATEGORY } = require("../utils/constants");
 const sequelize = require("../utils/database");
 
-const Invoice = sequelize.define(EvergreenTable.invoice, {
+const  Invoice = sequelize.define(EvergreenTable.invoice, {
       invoice_id: {
             type: DataTypes.UUID,
             allowNull: false,
