@@ -1,9 +1,41 @@
 const { Users, User_Details, User_Address } = require("../models/users");
 const { EvergreenTable } = require("../utils/constants");
 const sequelize = require("../utils/database");
-const jwt = require('jsonwebtoken');
+const jwt = require("jsonwebtoken");
 const { PERMISSIONS } = require("./auth/permission");
+const crypto = require("crypto");
+require("dotenv").config();
 
+const { SECRET_KEY, SECRET_IV, ECNRYPTION_METHOD } = process.env;
+
+const key = crypto
+  .createHash("sha512")
+  .update(SECRET_KEY)
+  .digest("hex")
+  .substring(0, 32);
+const encryptionIV = crypto
+  .createHash("sha512")
+  .update(SECRET_IV)
+  .digest("hex")
+  .substring(0, 16);
+function encryptData(data) {
+  const cipher = crypto.createCipheriv(ECNRYPTION_METHOD, key, encryptionIV);
+  return Buffer.from(
+    cipher.update(data, "utf8", "hex") + cipher.final("hex")
+  ).toString("base64");
+}
+function decryptData(encryptedData) {
+  const buffer = Buffer.from(encryptedData, "base64");
+  const decipher = crypto.createDecipheriv(
+    ECNRYPTION_METHOD,
+    key,
+    encryptionIV
+  );
+  return (
+    decipher.update(buff.toString("utf8"), "hex", "utf8") +
+    decipher.final("utf8")
+  );
+}
 /**
  * @swagger
  * /customers:
@@ -25,14 +57,27 @@ const getUsers = async (request, response, next) => {
       where: request.query,
       limit: 20,
       offset: 0,
-      include: [{ model: User_Details, as: "user_details", attributes: { exclude: "user_id" } },
-      { model: User_Address, as: "user_address", attributes: { exclude: "user_id" } }],
+      include: [
+        {
+          model: User_Details,
+          as: "user_details",
+          attributes: { exclude: "user_id" },
+        },
+        {
+          model: User_Address,
+          as: "user_address",
+          attributes: { exclude: "user_id" },
+        },
+      ],
     });
-    response.status(200).json(customers).end();
+
+    response
+      .status(200)
+      .json({ key: encryptData(Buffer.from(JSON.stringify(customers))) })
+      .end();
   } catch (error) {
     next(error);
   }
-
 };
 
 /**
@@ -62,12 +107,13 @@ const getUsersById = async (request, response, next) => {
     const customers = await Users.findByPk(id, {
       include: {
         model: User_Details,
-        as: "user_details", attributes: { exclude: "user_id" }
+        as: "user_details",
+        attributes: { exclude: "user_id" },
       },
     });
     response.status(200).json(customers).end();
   } catch (error) {
-    next(error)
+    next(error);
   }
 };
 
@@ -93,31 +139,34 @@ const getUsersById = async (request, response, next) => {
  */
 const setUsers = async (request, response, next) => {
   try {
-    const customers = await Users.create(request.body,
-      {
-        include: [{
+    const customers = await Users.create(request.body, {
+      include: [
+        {
           model: User_Details,
-          as: "user_details"
-        }]
-      })
+          as: "user_details",
+        },
+      ],
+    });
     response.status(200).json(customers).end();
   } catch (error) {
-    next(error)
+    next(error);
   }
-
 };
-
 
 const putUsers = async (request, response, next) => {
   try {
     const transaction = await sequelize.transaction();
-    const customer = await Users.update(request.body,
+    const customer = await Users.update(
+      request.body,
       { where: { id: request.params.id } },
-      { transaction });
+      { transaction }
+    );
 
-    const user_details = await User_Details.update(request.body.user_details,
+    const user_details = await User_Details.update(
+      request.body.user_details,
       { where: { user_id: request.params.id } },
-      { transaction });
+      { transaction }
+    );
 
     await transaction.commit();
     response.status(200).json({ message: "Updated Successfully" }).end();
@@ -127,9 +176,7 @@ const putUsers = async (request, response, next) => {
       await transaction.rollback();
     }
   }
-
 };
-
 
 /**
  * @swagger
@@ -154,32 +201,37 @@ const putUsers = async (request, response, next) => {
  */
 const signIn = async (request, response, next) => {
   try {
-    const awtToken = await jwt.sign(request.body, "mysecret", { expiresIn: '30d' });
+    const awtToken = await jwt.sign(request.body, "mysecret", {
+      expiresIn: "30d",
+    });
     const [customers, created] = await Users.findOrCreate({
       where: request.body,
       defaults: {
         user_details: {
-          referral_id: String(request.body.phone).substring(0, 4).concat(Math.random().toString(36).substring(2, 7).toUpperCase())
-        }
+          referral_id: String(request.body.phone)
+            .substring(0, 4)
+            .concat(Math.random().toString(36).substring(2, 7).toUpperCase()),
+        },
       },
-      include: [{
-        model: User_Details,
-        as: "user_details"
-      },{
-        model: User_Address,
-        as: "user_address"
-      }]
+      include: [
+        {
+          model: User_Details,
+          as: "user_details",
+        },
+        {
+          model: User_Address,
+          as: "user_address",
+        },
+      ],
     });
-    customers.dataValues.accessToken = awtToken
-    customers.dataValues.roles_key = PERMISSIONS[customers.dataValues.user_role]
+    customers.dataValues.accessToken = awtToken;
+    customers.dataValues.roles_key =
+      PERMISSIONS[customers.dataValues.user_role];
     response.status(200).json(customers).end();
-
   } catch (error) {
-    next(error)
+    next(error);
   }
 };
-
-
 
 module.exports = {
   getUsers,
